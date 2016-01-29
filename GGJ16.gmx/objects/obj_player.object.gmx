@@ -36,6 +36,9 @@ key_aim_down = vk_down;
 key_move_left = vk_left;
 key_move_right = vk_right;
 key_attack = vk_lshift;
+key_jump = vk_control;
+on_ground = false;
+jump_speed = 10;
 </string>
           </argument>
         </arguments>
@@ -58,9 +61,10 @@ key_attack = vk_lshift;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x, velocity_x - acceleration_x, velocity_x + acceleration_x);
+            <string>x_previous = x; y_previous = y;
 
-velocity_y += gravity_y;
+// Changes velocity.
+velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x, velocity_x - acceleration_x, velocity_x + acceleration_x);
 
 if(velocity_x &gt; 0.0) {
     scale_x = 1.0;
@@ -71,10 +75,38 @@ else if(velocity_x &lt; 0.0) {
 
 x_previous = x; y_previous = y;
 x += velocity_x; y += velocity_y;
+if (on_ground) {
+    if (keyboard_check_pressed(key_jump)) {
+        velocity_y = -jump_speed;
+    } else {
+        velocity_y = 0;
+    }
+} else {
+    velocity_y += gravity_y;
+}
 
-if (place_meeting(x, y, obj_parent_collision)) {
-    velocity_y = 0;
-    y = y_previous;
+// Moves vertically.
+if (velocity_y &gt; 0) {
+    move_contact_solid(270, velocity_y);
+} else if (velocity_y &lt; 0) {
+    move_contact_solid(90, -velocity_y);
+    if (place_meeting(x, y - 1, obj_parent_collision)) velocity_y = 0;
+}
+on_ground = place_meeting(x, y + 1, obj_parent_collision);
+
+// Moves horizontally.
+if (velocity_x &gt; 0) {
+    move_contact_solid(0, velocity_x);
+    var instance_to_the_right = instance_place(x + 1, y, obj_parent_collision);
+    if (instance_to_the_right) {
+        switch (instance_to_the_right.object_index) {
+            default: velocity_x = 0; break;
+            //case obj_slope_0: y = ; break;
+        }
+    }
+} else if (velocity_x &lt; 0) {
+    move_contact_solid(180, -velocity_x);
+    if (place_meeting(x - 1, y, obj_parent_collision)) velocity_x = 0;
 }
 
 if (keyboard_check_pressed(key_attack)) {

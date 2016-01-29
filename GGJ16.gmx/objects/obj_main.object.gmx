@@ -27,6 +27,9 @@
             <kind>1</kind>
             <string>//window_set_fullscreen(true);
 application_surface_enable(false);
+
+//display_width = display_get_width(); display_height = display_get_height();
+display_width = room_width; display_height = room_height;
 </string>
           </argument>
         </arguments>
