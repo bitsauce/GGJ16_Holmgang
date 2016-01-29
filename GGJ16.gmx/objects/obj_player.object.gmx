@@ -30,6 +30,7 @@ gravity_y = 0.5;
 max_speed_x = 5;
 acceleration_x = 0.5;
 arrow_power = 0.0;
+scale_x = 1.0;
 key_move_left = vk_left;
 key_move_right = vk_right;
 key_attack = vk_lshift;
@@ -59,6 +60,13 @@ key_attack = vk_lshift;
 
 velocity_y += gravity_y;
 
+if(velocity_x &gt; 0.0) {
+    scale_x = 1.0;
+}
+else if(velocity_x &lt; 0.0) {
+    scale_x = -1.0;
+}
+
 x_previous = x; y_previous = y;
 x += velocity_x; y += velocity_y;
 
@@ -73,7 +81,7 @@ if (keyboard_check(key_attack)) {
 
 if(arrow_power &gt; 0.0 &amp;&amp; keyboard_check_released(key_attack)) {
     arrow = instance_create(x, y, obj_arrow);
-    arrow.velocity_x = min(arrow_power, 25) * dcos(45);
+    arrow.velocity_x = min(arrow_power, 25) * dcos(45) * scale_x;
     arrow.velocity_y = -min(arrow_power, 25) * dsin(45);
     arrow_power = 0.0;
 }
@@ -99,7 +107,11 @@ if(arrow_power &gt; 0.0 &amp;&amp; keyboard_check_released(key_attack)) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_text(5, 5, "Arrow power: " + string(arrow_power));
+            <string>var debug_str = "";
+debug_str = "Arrow power: " + string(arrow_power) + "#";
+if(scale_x &gt; 0) debug_str += "Facing: Right#";
+else debug_str += "Facing: Left#";
+draw_text(5, 5, debug_str);
 </string>
           </argument>
         </arguments>
