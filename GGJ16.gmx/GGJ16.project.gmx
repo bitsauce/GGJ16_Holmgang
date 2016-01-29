@@ -12,6 +12,7 @@
     <sprite>sprites\spr_slope_1</sprite>
     <sprite>sprites\spr_slope_2</sprite>
     <sprite>sprites\spr_slope_3</sprite>
+    <sprite>sprites\spr_arrow</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -24,6 +25,7 @@
     <object>objects\obj_slope_2</object>
     <object>objects\obj_slope_3</object>
     <object>objects\obj_parent_collision</object>
+    <object>objects\obj_arrow</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_main</room>
