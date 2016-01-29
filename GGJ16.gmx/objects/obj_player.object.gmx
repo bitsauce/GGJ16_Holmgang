@@ -55,8 +55,15 @@ key_move_right = vk_right;
             <kind>1</kind>
             <string>velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x, velocity_x - acceleration_x, velocity_x + acceleration_x);
 
-x += velocity_x;
-y += velocity_y;
+velocity_y += gravity_y;
+
+x_previous = x; y_previous = y;
+x += velocity_x; y += velocity_y;
+
+if (position_meeting(x, y, obj_block)) {
+    velocity_y = 0;
+    y = y_previous;
+}
 </string>
           </argument>
         </arguments>
