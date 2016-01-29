@@ -100,8 +100,8 @@ if (velocity_x &gt; 0) {
     var instance_to_the_right = instance_place(x + 1, y, obj_parent_collision);
     if (instance_to_the_right) {
         switch (instance_to_the_right.object_index) {
-            //case obj_slope_0: move_outside_solid(90, ); break;
-            default: velocity_x = 0;
+            default: velocity_x = 0; break;
+            //case obj_slope_0: y = ; break;
         }
     }
 } else if (velocity_x &lt; 0) {
