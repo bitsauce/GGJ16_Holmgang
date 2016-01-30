@@ -64,19 +64,19 @@ despawn_time = 3.0;
         y = y_previous;
         active = false;
     }
+    
+    var player = instance_place(x, y, obj_player);
+    if (player &amp;&amp; player != owner) {
+        player.life_points--;
+        player.respawn = true;
+        instance_destroy();
+    }
 }
 else {
     despawn_time -= 1.0 / room_speed;
     if(despawn_time &lt;= 0) {
         instance_destroy();
     }
-}
-
-
-var player = instance_place(x, y, obj_player);
-if (player &amp;&amp; player != owner) {
-    player.life_points--;
-    instance_destroy();
 }
 </string>
           </argument>

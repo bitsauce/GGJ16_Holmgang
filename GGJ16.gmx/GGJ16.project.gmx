@@ -15,11 +15,9 @@
     <sprite>sprites\spr_slope_2</sprite>
     <sprite>sprites\spr_slope_3</sprite>
     <sprite>sprites\spr_arrow</sprite>
-    <sprite>sprites\omen_gauge_point</sprite>
+    <sprite>sprites\spr_omen_gauge_point</sprite>
   </sprites>
-  <backgrounds name="background">
-    <background>background\bg_tile_set</background>
-  </backgrounds>
+  <backgrounds name="background"/>
   <paths name="paths"/>
   <objects name="objects">
     <object>objects\obj_main</object>
@@ -35,7 +33,6 @@
     <object>objects\obj_arrow</object>
     <object>objects\obj_initial_spawn_point</object>
     <object>objects\obj_spawn_point</object>
-    <object>objects\omen_gauge</object>
     <object>objects\obj_ui</object>
   </objects>
   <rooms name="rooms">

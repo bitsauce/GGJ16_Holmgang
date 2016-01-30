@@ -40,8 +40,8 @@ with (player_0) {
     key_move_right = ord("D");
     key_aim_up = ord("W");
     key_aim_down = ord("S");
-    key_attack = vk_lshift;
-    key_jump = ord("1");
+    key_attack = ord("E");
+    key_jump = vk_space;
 }
 
 with (player_1) {
