@@ -26,6 +26,8 @@
     <object>objects\obj_slope_3</object>
     <object>objects\obj_parent_collision</object>
     <object>objects\obj_arrow</object>
+    <object>objects\obj_spawn_point</object>
+    <object>objects\obj_initial_spawn_point</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_main</room>
