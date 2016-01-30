@@ -43,6 +43,7 @@ with (player_0) {
     key_attack = ord("E");
     key_jump = vk_space;
     key_switch_weapon = ord("Q");
+    color = make_colour_rgb(0, 200, 200);
 }
 
 with (player_1) {
@@ -53,6 +54,8 @@ with (player_1) {
     key_attack = vk_rshift;
     key_jump = vk_rcontrol;
     key_switch_weapon = vk_enter;
+    color = make_colour_rgb(200, 0, 200);
+    scale_x = -1;
 }
 
 instance_create(0,0,obj_ui);
