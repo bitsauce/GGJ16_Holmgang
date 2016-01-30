@@ -75,7 +75,7 @@ if(time &gt;= 60) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var angle = 2 * pi * time / 1.0 - pi;
+            <string>var angle = 2 * pi * time / 60.0 - pi;
 
 draw_set_blend_mode_ext(bm_dest_color, bm_zero);
 draw_set_colour(merge_colour(c_white, make_colour_rgb(230, 230, 255), cos(angle) * 0.5 + 0.5));
