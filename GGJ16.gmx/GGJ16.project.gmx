@@ -23,7 +23,6 @@
     <sprite>sprites\spr_background_1</sprite>
     <sprite>sprites\spr_foreground_0</sprite>
     <sprite>sprites\spr_foreground_1</sprite>
-    <sprite>sprites\spr_player_charge_bow</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
