@@ -29,6 +29,8 @@
 gravity_y = 0.5;
 max_speed_x = 5;
 acceleration_x = 0.5;
+active = true;
+despawn_time = 3.0;
 </string>
           </argument>
         </arguments>
@@ -51,14 +53,30 @@ acceleration_x = 0.5;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>velocity_y += gravity_y;
+            <string>if(active) {
+    velocity_y += gravity_y;
+    
+    x_previous = x; y_previous = y;
+    x += velocity_x; y += velocity_y;
 
-x_previous = x; y_previous = y;
-x += velocity_x; y += velocity_y;
+    if (place_meeting(x, y, obj_parent_collision)) {
+        //velocity_y = 0;
+        y = y_previous;
+        active = false;
+    }
+}
+else {
+    despawn_time -= 1.0 / room_speed;
+    if(despawn_time &lt;= 0) {
+        instance_destroy();
+    }
+}
 
-if (place_meeting(x, y, obj_parent_collision)) {
-    velocity_y = 0;
-    y = y_previous;
+
+var player = instance_place(x, y, obj_player);
+if (player &amp;&amp; player != owner) {
+    player.life_points--;
+    instance_destroy();
 }
 </string>
           </argument>

@@ -53,8 +53,12 @@ player_1 = obj_main.player_1;
     draw_sprite(omen_gauge_point, 0, 32, 200 + 48*i);
 }
 for (var i = 0; i &lt; player_1.omen_points; i++) {
-    draw_sprite(omen_gauge_point, 0, room_width - 64, 200 + 48*i);   
+    draw_sprite(omen_gauge_point, 0, obj_main.display_width - 64, 200 + 48*i);   
 }
+
+draw_text(5, 5, "Lives: " + string(player_0.life_points));
+var p2str = "Lives: " + string(player_1.life_points)
+draw_text(obj_main.display_width - string_width(p2str) - 5, 5, p2str);
 </string>
           </argument>
         </arguments>
