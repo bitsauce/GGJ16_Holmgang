@@ -20,6 +20,7 @@
     <sprite>sprites\spr_no_bad_omen</sprite>
     <sprite>sprites\spr_player_swing</sprite>
     <sprite>sprites\spr_player_turn</sprite>
+    <sprite>sprites\spr_player_draw_bow</sprite>
     <sprite>sprites\spr_background_0</sprite>
     <sprite>sprites\spr_background_1</sprite>
     <sprite>sprites\spr_foreground_0</sprite>
