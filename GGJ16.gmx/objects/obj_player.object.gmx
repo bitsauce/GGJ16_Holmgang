@@ -71,8 +71,6 @@ else if(velocity_x &lt; 0.0) {
     scale_x = -1.0;
 }
 
-x_previous = x; y_previous = y;
-x += velocity_x; y += velocity_y;
 if (on_ground) {
     if (keyboard_check_pressed(key_jump)) {
         velocity_y = -jump_speed;
