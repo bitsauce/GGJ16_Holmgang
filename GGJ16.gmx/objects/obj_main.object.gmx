@@ -30,11 +30,6 @@ application_surface_enable(false);
 
 //display_width = display_get_width(); display_height = display_get_height();
 display_width = room_width; display_height = room_height;
-
-var spawn_point = instance_find(obj_initial_spawn_point, 0);
-player_0 = instance_create(spawn_point.x - 32 * 2, spawn_point.y, obj_player);
-player_1 = instance_create(spawn_point.x + 32 * 2, spawn_point.y, obj_player);
-instance_create(0,0,obj_ui);
 </string>
           </argument>
         </arguments>
