@@ -42,6 +42,7 @@ with (player_0) {
     key_aim_down = ord("S");
     key_attack = ord("E");
     key_jump = vk_space;
+    key_switch_weapon = ord("Q");
 }
 
 with (player_1) {
@@ -51,6 +52,7 @@ with (player_1) {
     key_aim_down = vk_down;
     key_attack = vk_rshift;
     key_jump = vk_rcontrol;
+    key_switch_weapon = vk_enter;
 }
 
 instance_create(0,0,obj_ui);
