@@ -81,7 +81,7 @@ if (on_ground) {
     velocity_y += gravity_y;
 }
 
-// Moves vertically.
+// Collision vertically.
 if (velocity_y &gt; 0) {
     move_contact_solid(270, velocity_y);
 } else if (velocity_y &lt; 0) {
@@ -90,15 +90,22 @@ if (velocity_y &gt; 0) {
 }
 on_ground = place_meeting(x, y + 1, obj_parent_collision);
 
-// Moves horizontally.
+// Collision horizontally.
 if (velocity_x &gt; 0) {
-    move_contact_solid(0, velocity_x);
-    var instance_to_the_right = instance_place(x + 1, y, obj_parent_collision);
+    var instance_to_the_right = instance_place(x + velocity_x, y, obj_parent_collision);
     if (instance_to_the_right) {
         switch (instance_to_the_right.object_index) {
-            default: velocity_x = 0; break;
-            //case obj_slope_0: y = ; break;
+            case obj_slope_1:
+                x += velocity_x;
+                move_outside_solid(90, -1);
+                break;
+            
+            default:
+                move_contact_solid(0, velocity_x);
+                velocity_x = 0;
         }
+    } else {
+        x += velocity_x;
     }
 } else if (velocity_x &lt; 0) {
     move_contact_solid(180, -velocity_x);
