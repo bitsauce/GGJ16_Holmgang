@@ -190,7 +190,7 @@ if(respawn_timer &lt; 2.5) {
     
     // Arrow firing
     if(equiped_weapon == 1) {
-        if (keyboard_check_pressed(key_attack) &amp;&amp; attack_power == 0.0) {
+        if (keyboard_check_pressed(key_attack) &amp;&amp; arrow_power == 0.0) {
             arrow_power = 10.0;
             animation_index = 0.0;
         }
