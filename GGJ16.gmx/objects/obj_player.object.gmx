@@ -72,6 +72,7 @@ spr_player = spr_player_idle;
           <argument>
             <kind>1</kind>
             <string>if(respawn) {
+    life_points--;
     respawn_timer = 5.0;
     respawn = false;
     var spawn_point = instance_nearest(x, y, obj_spawn_point);
@@ -149,17 +150,19 @@ if(respawn_timer &lt; 2.5) {
         }
     }
     
-    if(id == obj_main.player_0) {
-        if(instance_place(x, y, obj_main.player_1)) {
-            if(obj_main.player_1.swing_attack) {
-                respawn = true;
+    if(respawn_timer &lt; 0.0) {
+        if(id == obj_main.player_0) {
+            if(instance_place(x, y, obj_main.player_1)) {
+                if(obj_main.player_1.swing_attack) {
+                    respawn = true;
+                }
             }
         }
-    }
-    else {
-        if(instance_place(x, y, obj_main.player_0)) {
-            if(obj_main.player_0.swing_attack) {
-                respawn = true;
+        else if(obj_main.player_0.respawn_timer &lt; 0.0) {
+            if(instance_place(x, y, obj_main.player_0)) {
+                if(obj_main.player_0.swing_attack) {
+                    respawn = true;
+                }
             }
         }
     }

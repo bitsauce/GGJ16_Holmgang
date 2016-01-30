@@ -27,6 +27,7 @@
             <kind>1</kind>
             <string>player_0 = obj_main.player_0;
 player_1 = obj_main.player_1;
+winner = 0;
 </string>
           </argument>
         </arguments>
@@ -74,6 +75,11 @@ for (var i = 0; i &lt; 3; i++) {
 draw_text(5, 5, "Lives: " + string(player_0.life_points));
 var p2str = "Lives: " + string(player_1.life_points)
 draw_text(obj_main.display_width - string_width(p2str) - 5, 5, p2str);
+
+if(winner) {
+    var str = "Player " + string(winner) + "#is victorious";
+    draw_text(obj_main.display_width / 2 - string_width(str) / 2, obj_main.display_height / 2 - string_height(str) / 2, str);
+}
 </string>
           </argument>
         </arguments>

@@ -67,7 +67,6 @@ despawn_time = 3.0;
     
     var player = instance_place(x, y, obj_player);
     if (player &amp;&amp; player != owner &amp;&amp; player.respawn_timer &lt; 0.0) {
-        player.life_points--;
         player.respawn = true;
         instance_destroy();
     }
