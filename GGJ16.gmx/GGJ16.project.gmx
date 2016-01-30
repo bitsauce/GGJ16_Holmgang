@@ -18,6 +18,7 @@
     <sprite>sprites\spr_bad_omen</sprite>
     <sprite>sprites\spr_no_bad_omen</sprite>
     <sprite>sprites\spr_player_swing</sprite>
+    <sprite>sprites\spr_player_turn</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
