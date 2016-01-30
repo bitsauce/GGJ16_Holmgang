@@ -39,6 +39,8 @@ key_attack = vk_lshift;
 key_jump = vk_control;
 on_ground = false;
 jump_speed = 10;
+
+omen_points = 3;
 </string>
           </argument>
         </arguments>
