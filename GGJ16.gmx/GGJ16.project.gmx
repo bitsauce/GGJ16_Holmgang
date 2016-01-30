@@ -37,6 +37,7 @@
     <object>objects\obj_initial_spawn_point</object>
     <object>objects\obj_spawn_point</object>
     <object>objects\obj_ui</object>
+    <object>objects\obj_day_night</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_main</room>
