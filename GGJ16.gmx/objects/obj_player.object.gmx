@@ -152,12 +152,7 @@ else if (keyboard_check(key_attack)) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var debug_str = "";
-debug_str = "Arrow power: " + string(arrow_power) + "#";
-if(scale_x &lt; 0) debug_str += "Facing: Right#";
-else debug_str += "Facing: Left#";
-draw_text(5, 5, debug_str);
-</string>
+            <string></string>
           </argument>
         </arguments>
       </action>
