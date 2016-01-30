@@ -8,11 +8,6 @@
   <sprites name="sprites">
     <sprite>sprites\spr_block</sprite>
     <sprite>sprites\spr_player</sprite>
-    <sprite>sprites\spr_slope_0</sprite>
-    <sprite>sprites\spr_slope_1</sprite>
-    <sprite>sprites\spr_slope_2</sprite>
-    <sprite>sprites\spr_slope_3</sprite>
-    <sprite>sprites\omen_gauge_point</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -20,13 +15,6 @@
     <object>objects\obj_main</object>
     <object>objects\obj_player</object>
     <object>objects\obj_block</object>
-    <object>objects\obj_slope_0</object>
-    <object>objects\obj_slope_1</object>
-    <object>objects\obj_slope_2</object>
-    <object>objects\obj_slope_3</object>
-    <object>objects\obj_parent_collision</object>
-    <object>objects\obj_ui</object>
-    <object>objects\omen_gauge</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_main</room>
