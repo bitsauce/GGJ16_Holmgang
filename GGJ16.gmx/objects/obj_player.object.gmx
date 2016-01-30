@@ -84,9 +84,12 @@ color = c_black;
 respawn_timer -= 1.0 / room_speed;
 if(respawn_timer &lt; 2.5) {
     x_previous = x; y_previous = y;
+    var can_move = spr_player != spr_player_kneeling || spr_player != spr_player_draw_bow || spr_player != spr_player_swing;
     
     // Changes velocity.
-    velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x, velocity_x - acceleration_x, velocity_x + acceleration_x);
+    if(can_move) {
+        velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x, velocity_x - acceleration_x, velocity_x + acceleration_x);
+    }
     
     // Changes animation.
     animation_index += animation_speed;
@@ -102,6 +105,18 @@ if(respawn_timer &lt; 2.5) {
             animation_index = sprite_get_number(spr_player_draw_bow) - 1 - (1 - aim_up);
         }
     }
+    else if(spr_player == spr_player_kneeling) {
+        if(keyboard_check_released(key_aim_down) || keyboard_check_pressed(key_aim_down)) {
+            animation_speed *= -1;
+        }
+        else if(animation_index &gt; sprite_get_number(spr_player_kneeling) - 1) {
+            animation_index = sprite_get_number(spr_player_kneeling) - 1;
+        }
+        else if(animation_index &lt; 0.0) {
+            spr_player =  spr_player_idle;
+            animation_speed *= -1;
+        }
+    }
     else {
         if(equiped_weapon == 0 &amp;&amp; keyboard_check_pressed(key_attack))
         {
@@ -112,7 +127,11 @@ if(respawn_timer &lt; 2.5) {
         else if(equiped_weapon == 1 &amp;&amp; keyboard_check_pressed(key_attack)) {
             spr_player = spr_player_draw_bow;
             animation_index = 0.0;
-        } 
+        }
+        else if(keyboard_check_pressed(key_aim_down)) {
+            spr_player = spr_player_kneeling;
+            animation_index = 0.0;
+        }
         else if(!on_ground) {
             spr_player = spr_player_turn;
         }
@@ -128,8 +147,9 @@ if(respawn_timer &lt; 2.5) {
             spr_player = spr_player_idle;
     }
     
+    // Jump
     if (on_ground) {
-        if (keyboard_check_pressed(key_jump)) {
+        if (can_move &amp;&amp; keyboard_check_pressed(key_jump)) {
             velocity_y = -jump_speed;
         } else {
             velocity_y = 0;
