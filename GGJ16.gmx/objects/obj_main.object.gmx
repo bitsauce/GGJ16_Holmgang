@@ -38,13 +38,19 @@ player_1 = instance_create(spawn_point.x + 32 * 2, spawn_point.y, obj_player);
 with (player_0) {
     key_move_left = ord("A");
     key_move_right = ord("D");
+    key_aim_up = ord("W");
+    key_aim_down = ord("S");
+    key_attack = vk_lshift;
     key_jump = ord("1");
 }
 
 with (player_1) {
     key_move_left = vk_left;
     key_move_right = vk_right;
-    key_jump = vk_control;
+    key_aim_up = vk_up;
+    key_aim_down = vk_down;
+    key_attack = vk_rshift;
+    key_jump = vk_rcontrol;
 }
 
 instance_create(0,0,obj_ui);

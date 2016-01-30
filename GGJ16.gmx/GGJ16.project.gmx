@@ -17,7 +17,9 @@
     <sprite>sprites\spr_arrow</sprite>
     <sprite>sprites\omen_gauge_point</sprite>
   </sprites>
-  <backgrounds name="background"/>
+  <backgrounds name="background">
+    <background>background\bg_tile_set</background>
+  </backgrounds>
   <paths name="paths"/>
   <objects name="objects">
     <object>objects\obj_main</object>
