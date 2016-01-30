@@ -7,7 +7,9 @@
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprite>sprites\spr_block</sprite>
-    <sprite>sprites\spr_player</sprite>
+    <sprite>sprites\spr_mask_player</sprite>
+    <sprite>sprites\spr_player_idle</sprite>
+    <sprite>sprites\spr_player_run</sprite>
     <sprite>sprites\spr_slope_0</sprite>
     <sprite>sprites\spr_slope_1</sprite>
     <sprite>sprites\spr_slope_2</sprite>
@@ -24,6 +26,7 @@
     <object>objects\obj_slope_1</object>
     <object>objects\obj_slope_2</object>
     <object>objects\obj_slope_3</object>
+    <object>objects\obj_parent_collision_stop</object>
     <object>objects\obj_parent_collision</object>
     <object>objects\obj_arrow</object>
   </objects>
