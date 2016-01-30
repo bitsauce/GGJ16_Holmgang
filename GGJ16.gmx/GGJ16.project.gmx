@@ -15,6 +15,7 @@
     <sprite>sprites\spr_slope_2</sprite>
     <sprite>sprites\spr_slope_3</sprite>
     <sprite>sprites\spr_arrow</sprite>
+    <sprite>sprites\omen_gauge_point</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -29,6 +30,10 @@
     <object>objects\obj_parent_collision_stop</object>
     <object>objects\obj_parent_collision</object>
     <object>objects\obj_arrow</object>
+    <object>objects\obj_initial_spawn_point</object>
+    <object>objects\obj_spawn_point</object>
+    <object>objects\omen_gauge</object>
+    <object>objects\obj_ui</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_main</room>
