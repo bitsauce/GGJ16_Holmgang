@@ -66,7 +66,7 @@ despawn_time = 3.0;
     }
     
     var player = instance_place(x, y, obj_player);
-    if (player &amp;&amp; player != owner) {
+    if (player &amp;&amp; player != owner &amp;&amp; player.respawn_timer &lt; 0.0) {
         player.life_points--;
         player.respawn = true;
         instance_destroy();
@@ -100,7 +100,10 @@ else {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_sprite_ext(spr_arrow, image_index, x, y, 1, 1, darctan2(-velocity_y, velocity_x), image_blend, image_alpha);
+            <string>var scale;
+if(velocity_x &lt; 0) scale = -1;
+else scale = 1;
+draw_sprite_ext(spr_arrow, image_index, x, y, scale, 1, darctan2(-velocity_y, velocity_x), image_blend, image_alpha);
 </string>
           </argument>
         </arguments>
