@@ -75,7 +75,7 @@ if(time &gt;= 60) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var angle = 2 * pi * time / 60.0;
+            <string>var angle = 2 * pi * time / 60.0 - pi;
 
 draw_set_blend_mode_ext(bm_dest_color, bm_zero);
 draw_set_colour(merge_colour(c_white, make_colour_rgb(230, 230, 255), sin(angle) * 0.5 + 0.5));
@@ -84,7 +84,7 @@ draw_set_blend_mode(bm_normal);
 
 draw_text(0, 0,"Angle: "+string(angle));
 
-draw_sprite(spr_block, 0, (cos(angle - pi) * 0.5 + 0.5) * obj_main.display_width * 0.9, -sin(angle) * obj_main.display_height * 0.75);
+draw_sprite(spr_block, 0, (cos(angle) * 0.5 + 0.5) * obj_main.display_width * 0.9, -sin(angle) * obj_main.display_height * 0.75);
 </string>
           </argument>
         </arguments>
