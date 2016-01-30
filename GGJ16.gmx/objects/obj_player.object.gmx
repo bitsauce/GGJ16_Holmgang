@@ -29,9 +29,16 @@
 gravity_y = 0.5;
 max_speed_x = 5;
 acceleration_x = 0.5;
+arrow_power = 0.0;
+scale_x = 1.0;
+key_aim_up = vk_up;
+key_aim_down = vk_down;
 key_move_left = vk_left;
 key_move_right = vk_right;
-key_punish = vk_rcontrol;
+key_attack = vk_lshift;
+key_jump = vk_control;
+on_ground = false;
+jump_speed = 10;
 
 omen_points = 3;
 </string>
@@ -56,23 +63,71 @@ omen_points = 3;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x, velocity_x - acceleration_x, velocity_x + acceleration_x);
+            <string>x_previous = x; y_previous = y;
 
-velocity_y += gravity_y;
+// Changes velocity.
+velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x, velocity_x - acceleration_x, velocity_x + acceleration_x);
 
-x_previous = x; y_previous = y;
-x += velocity_x; y += velocity_y;
+if(velocity_x &gt; 0.0) {
+    scale_x = 1.0;
+}
+else if(velocity_x &lt; 0.0) {
+    scale_x = -1.0;
+}
 
-if (place_meeting(x, y, obj_parent_collision)) {
-    velocity_y = 0;
-    y = y_previous;
+if (on_ground) {
+    if (keyboard_check_pressed(key_jump)) {
+        velocity_y = -jump_speed;
+    } else {
+        velocity_y = 0;
+    }
+} else {
+    velocity_y += gravity_y;
+}
+
+// Moves vertically.
+if (velocity_y &gt; 0) {
+    move_contact_solid(270, velocity_y);
+} else if (velocity_y &lt; 0) {
+    move_contact_solid(90, -velocity_y);
+    if (place_meeting(x, y - 1, obj_parent_collision)) velocity_y = 0;
+}
+on_ground = place_meeting(x, y + 1, obj_parent_collision);
+
+// Moves horizontally.
+if (velocity_x &gt; 0) {
+    move_contact_solid(0, velocity_x);
+    var instance_to_the_right = instance_place(x + 1, y, obj_parent_collision);
+    if (instance_to_the_right) {
+        switch (instance_to_the_right.object_index) {
+            default: velocity_x = 0; break;
+            //case obj_slope_0: y = ; break;
+        }
+    }
+} else if (velocity_x &lt; 0) {
+    move_contact_solid(180, -velocity_x);
+    if (place_meeting(x - 1, y, obj_parent_collision)) velocity_x = 0;
+}
+
+if (keyboard_check_pressed(key_attack)) {
+    arrow_power = 10.0;
+}
+else if(keyboard_check_released(key_attack)) {
+    arrow = instance_create(x, y, obj_arrow);
+    var angle = 45.0 + (keyboard_check(key_aim_up) - keyboard_check(key_aim_down)) * 22.5;
+    arrow.velocity_x = min(arrow_power, 25) * dcos(angle) * scale_x;
+    arrow.velocity_y = -min(arrow_power, 25) * dsin(angle);
+    arrow_power = 0.0;
+}
+else if (keyboard_check(key_attack)) {
+    arrow_power += 10.0 / room_speed;
 }
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="9" enumb="1">
+    <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -89,9 +144,38 @@ if (place_meeting(x, y, obj_parent_collision)) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (keyboard_check_pressed(key_punish)) {
-    omen_points--;
-}
+            <string>var debug_str = "";
+debug_str = "Arrow power: " + string(arrow_power) + "#";
+if(scale_x &gt; 0) debug_str += "Facing: Right#";
+else debug_str += "Facing: Left#";
+draw_text(5, 5, debug_str);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_sprite(spr_player, image_index, x, y);
+draw_set_colour(make_colour_rgb(255, 0, 0));
+var angle = 45.0 + (keyboard_check(key_aim_up) - keyboard_check(key_aim_down)) * 22.5;    
+draw_line(x, y, x + dcos(angle) * 20 * scale_x, y - dsin(angle) * 20);
+draw_set_colour(make_colour_rgb(0, 0, 0));
 </string>
           </argument>
         </arguments>
