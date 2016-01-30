@@ -34,6 +34,19 @@ display_width = room_width; display_height = room_height;
 var spawn_point = instance_find(obj_initial_spawn_point, 0);
 player_0 = instance_create(spawn_point.x - 32 * 2, spawn_point.y, obj_player);
 player_1 = instance_create(spawn_point.x + 32 * 2, spawn_point.y, obj_player);
+
+with (player_0) {
+    key_move_left = ord("A");
+    key_move_right = ord("D");
+    key_jump = ord("1");
+}
+
+with (player_1) {
+    key_move_left = vk_left;
+    key_move_right = vk_right;
+    key_jump = vk_control;
+}
+
 instance_create(0,0,obj_ui);
 </string>
           </argument>

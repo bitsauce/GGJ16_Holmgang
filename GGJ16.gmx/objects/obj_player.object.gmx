@@ -179,11 +179,7 @@ draw_text(5, 5, debug_str);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_sprite(spr_player, image_index, x, y);
-draw_set_colour(make_colour_rgb(255, 0, 0));
-var angle = 45.0 + (keyboard_check(key_aim_up) - keyboard_check(key_aim_down)) * 22.5;    
-draw_line(x, y, x + dcos(angle) * 20 * scale_x, y - dsin(angle) * 20);
-draw_set_colour(make_colour_rgb(0, 0, 0));
+            <string>draw_set_colour(c_black);
 draw_sprite_ext(spr_player, animation_index, x, y, scale_x, 1, 0, c_white, 1);
 //draw_sprite_ext(sprite_index, 0, x, y, 1, 1, 0, c_white, 0.5);
 </string>
