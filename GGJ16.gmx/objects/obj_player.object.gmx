@@ -149,6 +149,21 @@ if(respawn_timer &lt; 2.5) {
         }
     }
     
+    if(id == obj_main.player_0) {
+        if(instance_place(x, y, obj_main.player_1)) {
+            if(obj_main.player_1.swing_attack) {
+                respawn = true;
+            }
+        }
+    }
+    else {
+        if(instance_place(x, y, obj_main.player_0)) {
+            if(obj_main.player_0.swing_attack) {
+                respawn = true;
+            }
+        }
+    }
+    
     // Arrow firing
     if(equiped_weapon == 1) {
         if (keyboard_check_pressed(key_attack)) {
