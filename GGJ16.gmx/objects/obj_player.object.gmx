@@ -37,6 +37,7 @@ key_move_right = vk_right;
 key_attack = vk_lshift;
 key_jump = vk_control;
 key_switch_weapon = vk_enter;
+aim_up = false;
 on_ground = false;
 jump_speed = 15;
 animation_speed = 0.25;
@@ -98,7 +99,7 @@ if(respawn_timer &lt; 2.5) {
     }
     else if(spr_player == spr_player_draw_bow) {
         if(animation_index &gt;= sprite_get_number(spr_player_draw_bow) - 1) {
-            animation_index = sprite_get_number(spr_player_draw_bow) - 1 - (1 - keyboard_check(key_aim_up));
+            animation_index = sprite_get_number(spr_player_draw_bow) - 1 - (1 - aim_up);
         }
     }
     else {
@@ -194,12 +195,15 @@ if(respawn_timer &lt; 2.5) {
             if (keyboard_check_pressed(key_attack)) {
                 animation_index = 0.0;
                 bow_attack = true;
+                aim_up = false;
             }
         }
         else {
+            if(keyboard_check_pressed(key_aim_up)) aim_up = true;
+            else if(keyboard_check_released(key_aim_down)) aim_up = false;
             if (animation_index &gt;= sprite_get_number(spr_player_draw_bow) - 2 &amp;&amp; !keyboard_check(key_attack)) {
                 var arrow = instance_create(x, y - 20, obj_arrow);
-                var angle = 45.0 * keyboard_check(key_aim_up);
+                var angle = 45.0 * aim_up;
                 arrow.velocity_x = 15.0 * dcos(angle) * scale_x * 2;
                 arrow.velocity_y = -15.0 * dsin(angle);
                 arrow.owner = id;
