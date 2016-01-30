@@ -15,7 +15,8 @@
     <sprite>sprites\spr_slope_2</sprite>
     <sprite>sprites\spr_slope_3</sprite>
     <sprite>sprites\spr_arrow</sprite>
-    <sprite>sprites\spr_omen_gauge_point</sprite>
+    <sprite>sprites\spr_bad_omen</sprite>
+    <sprite>sprites\spr_no_bad_omen</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>

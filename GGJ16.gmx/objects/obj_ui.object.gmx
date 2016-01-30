@@ -49,11 +49,26 @@ player_1 = obj_main.player_1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>for (var i = 0; i &lt; player_0.omen_points; i++) {
-    draw_sprite(spr_omen_gauge_point, 0, 32, 200 + 48*i);
+            <string>for (var i = 0; i &lt; 3; i++) {
+    var sprite;
+    if (i &lt; player_0.omen_points) {
+        sprite = spr_no_bad_omen;
+    }
+    else {
+        sprite = spr_bad_omen;
+    }
+    draw_sprite(sprite, 0, 32, 200 + 48 * i);
 }
-for (var i = 0; i &lt; player_1.omen_points; i++) {
-    draw_sprite(spr_omen_gauge_point, 0, obj_main.display_width - 64, 200 + 48*i);   
+
+for (var i = 0; i &lt; 3; i++) {
+    var sprite;
+    if (i &lt; player_1.omen_points) {
+        sprite = spr_no_bad_omen;
+    }
+    else {
+        sprite = spr_bad_omen;
+    }
+    draw_sprite(sprite, 0, obj_main.display_width - 64, 200 + 48 * i);
 }
 
 draw_text(5, 5, "Lives: " + string(player_0.life_points));

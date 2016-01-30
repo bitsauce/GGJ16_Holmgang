@@ -78,6 +78,8 @@ instance_create(0, 0, obj_camera);
           <argument>
             <kind>1</kind>
             <string>if (keyboard_check_pressed(vk_escape)) game_end();
+if (keyboard_check_pressed(ord("1"))) player_0.omen_points++;
+if (keyboard_check_pressed(ord("2"))) player_2.omen_points++;
 </string>
           </argument>
         </arguments>
