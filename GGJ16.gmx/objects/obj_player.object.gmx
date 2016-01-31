@@ -364,7 +364,7 @@ x = clamp(x, 478, 5353);
     placement = ds_map_exists(weapon_x, spr_player) &amp;&amp; ds_map_exists(weapon_y, spr_player) &amp;&amp; ds_map_exists(weapon_angle, spr_player);
     behind = ds_map_exists(weapon_behind, spr_player) &amp;&amp; ds_map_find_value(weapon_behind, spr_player);
     if(!behind) {
-        draw_sprite_ext(spr_player, animation_index, x, y - 2, scale_x, 1, 0, color, 1);
+        draw_sprite_ext(spr_player, animation_index, x, y + 2, scale_x, 1, 0, color, 1);
     }
     if(placement) {
         var angle;
@@ -388,11 +388,11 @@ x = clamp(x, 478, 5353);
         
         draw_sprite_ext(sprite, weapon_animation_index,
             x + (ds_list_find_value(ds_map_find_value(weapon_x, spr_player), frame_index) - sprite_get_xoffset(spr_player)) * scale_x,
-            y + (ds_list_find_value(ds_map_find_value(weapon_y, spr_player), frame_index) - sprite_get_yoffset(spr_player)),
+            y + 2 + (ds_list_find_value(ds_map_find_value(weapon_y, spr_player), frame_index) - sprite_get_yoffset(spr_player)),
             1, scale_x, angle, c_white, 1);
     }
     if(behind) {
-        draw_sprite_ext(spr_player, animation_index, x, y - 2, scale_x, 1, 0, color, 1);
+        draw_sprite_ext(spr_player, animation_index, x, y + 2, scale_x, 1, 0, color, 1);
     }
 }
 </string>
