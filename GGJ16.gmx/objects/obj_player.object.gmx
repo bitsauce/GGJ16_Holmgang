@@ -45,7 +45,7 @@ jump_timer = -1;
 animation_speed = 0.25;
 animation_index = irandom(100);
 omen_points = 3;
-life_points = 3;
+life_points = 5;
 respawn = false;
 respawn_timer = 0.0;
 equiped_weapon = 0;
@@ -446,6 +446,8 @@ if(respawn_timer &lt; 2.5) {
     
     if(bell_active &amp;&amp; bell_timer &lt; 0.0) {
         omen_points--;
+        obj_camera.screenshake_x = 5;
+        obj_camera.screenshake_y = 5;
         bell_active = false;
     }
     bell_timer -= 1.0 / room_speed;
@@ -465,6 +467,8 @@ if(respawn_timer &lt; 2.5) {
     // Greeting
     if(greeting_active &amp;&amp; greeting_timer &lt; 0.0) {
         omen_points--;
+        obj_camera.screenshake_x = 5;
+        obj_camera.screenshake_y = 5;
         greeting_active = false;
     }
     greeting_timer -= 1.0 / room_speed;
@@ -535,6 +539,17 @@ x = clamp(x, 478, 5353);
     if(behind) {
         draw_sprite_ext(spr_player, animation_index, x, y + 2, scale_x, 1, 0, color, 1);
     }
+}
+
+if (omen_points == 2) {
+    draw_sprite(spr_skull, 0, x, y - 70);
+} else if (omen_points == 1) {
+    draw_sprite(spr_skull, 0, x - sprite_get_width(spr_skull) * 0.5 - 2, y - 70);
+    draw_sprite(spr_skull, 0, x + sprite_get_width(spr_skull) * 0.5 + 2, y - 70);
+} else if (omen_points = 0) {
+    draw_sprite(spr_skull, 0, x - sprite_get_width(spr_skull) - 2, y - 70);
+    draw_sprite(spr_skull, 0, x, y - 70);
+    draw_sprite(spr_skull, 0, x + sprite_get_width(spr_skull) + 2, y - 70);
 }
 </string>
           </argument>

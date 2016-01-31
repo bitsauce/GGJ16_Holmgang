@@ -29,7 +29,7 @@
 messages[1] = "Dance so the sun won't stop shining!";
 messages[2] = "Keep facing right to enjoy the beautiful sunset.";
 messages[3] = "Avoid the evil spirits! Get indoors!";
-messages[4] = "";
+messages[4] = "Remember to greet your opponent before you fight.";
 timer = 0;
 </string>
           </argument>
@@ -56,7 +56,7 @@ timer = 0;
             <string>draw_sprite(sprite_index, 0, obj_main.display_width * 0.5, 32 + sprite_height * 0.5);
 
 draw_set_halign(fa_center); draw_set_valign(fa_middle);
-draw_set_color(c_dkgray); draw_set_font(ft_normal);
+draw_set_color(c_gray); draw_set_font(ft_normal);
 draw_text(obj_main.display_width * 0.5, 32 + sprite_height * 0.5, messages[message]);
 
 ++timer;
@@ -76,6 +76,10 @@ switch (message) {
         
     case 3:
         if (timer &gt; room_speed * 5) instance_destroy();
+        break;
+        
+    case 4:
+        if (timer &gt; room_speed * 7) instance_destroy();
         break;
 }
 </string>
