@@ -45,6 +45,7 @@
     <sprite>sprites\spr_bell</sprite>
     <sprite>sprites\spr_sun_moon</sprite>
     <sprite>sprites\spr_door</sprite>
+    <sprite>sprites\spr_door_open</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
