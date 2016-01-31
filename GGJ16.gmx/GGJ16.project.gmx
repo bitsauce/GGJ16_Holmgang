@@ -11,6 +11,10 @@
     <sound>sound\snd_bow_draw</sound>
     <sound>sound\snd_bow_hold</sound>
     <sound>sound\snd_bow_shoot</sound>
+    <sound>sound\snd_footstep_2</sound>
+    <sound>sound\snd_footstep_3</sound>
+    <sound>sound\snd_footstep_4</sound>
+    <sound>sound\snd_footstep_1</sound>
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_block</sprite>
