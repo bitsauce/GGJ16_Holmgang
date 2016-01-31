@@ -26,13 +26,21 @@
     <sprite>sprites\spr_foreground_0</sprite>
     <sprite>sprites\spr_foreground_1</sprite>
     <sprite>sprites\spr_player_kneeling</sprite>
+    <sprite>sprites\spr_water</sprite>
+    <sprite>sprites\spr_water_normal</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
+  <shaders name="shaders">
+    <shader type="GLSLES">shaders\sh_water.shader</shader>
+  </shaders>
   <objects name="objects">
     <object>objects\obj_main</object>
     <object>objects\obj_camera</object>
     <object>objects\obj_player</object>
+    <object>objects\obj_block_jump_through</object>
+    <object>objects\obj_slope_0_jump_through</object>
+    <object>objects\obj_slope_1_jump_through</object>
     <object>objects\obj_block</object>
     <object>objects\obj_block_small</object>
     <object>objects\obj_slope_0</object>
@@ -41,9 +49,11 @@
     <object>objects\obj_slope_3</object>
     <object>objects\obj_parent_collision_stop</object>
     <object>objects\obj_parent_collision</object>
+    <object>objects\obj_parent_collision_jump_through</object>
     <object>objects\obj_arrow</object>
     <object>objects\obj_initial_spawn_point</object>
     <object>objects\obj_spawn_point</object>
+    <object>objects\obj_water</object>
     <object>objects\obj_ui</object>
     <object>objects\obj_day_night</object>
     <object>objects\obj_background_0</object>
