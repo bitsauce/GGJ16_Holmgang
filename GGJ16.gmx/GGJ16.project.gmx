@@ -91,6 +91,8 @@
     <object>objects\obj_slope_0_jump_through</object>
     <object>objects\obj_slope_1_jump_through</object>
     <object>objects\obj_block</object>
+    <object>objects\obj_inside_block</object>
+    <object>objects\obj_outside_block</object>
     <object>objects\obj_block_small</object>
     <object>objects\obj_slope_0</object>
     <object>objects\obj_slope_1</object>

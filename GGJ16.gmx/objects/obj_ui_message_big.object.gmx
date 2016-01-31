@@ -63,19 +63,19 @@ draw_text(obj_main.display_width * 0.5, 32 + sprite_height * 0.5, messages[messa
 
 switch (message) {
     case 0:
-        if (obj_day_night.time / 60 &gt; 0.25) instance_destroy();
+        if (obj_day_night.time / 60 &gt; 0.3) instance_destroy();
         break;
         
     case 1:
-        if (timer &gt; room_speed * 5) instance_destroy();
+        if (timer &gt; room_speed * 10) instance_destroy();
         break;
         
     case 2:
-        if (obj_day_night.time / 60 &gt; 0.85) instance_destroy();
+        if (obj_day_night.time / 60 &gt; 0.9) instance_destroy();
         break;
         
     case 3:
-        if (timer &gt; room_speed * 5) instance_destroy();
+        if (timer &gt; room_speed * 10) instance_destroy();
         break;
         
     case 4:

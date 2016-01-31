@@ -50,39 +50,7 @@ winner = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(obj_player)) {
-    for (var i = 0; i &lt; 3; i++) {
-        var sprite;
-        if (i &lt; player_0.omen_points) {
-            sprite = spr_no_bad_omen;
-        }
-        else {
-            sprite = spr_bad_omen;
-        }
-        draw_sprite(sprite, 0, 32, 200 + 48 * i);
-    }
-    
-    for (var i = 0; i &lt; 3; i++) {
-        var sprite;
-        if (i &lt; player_1.omen_points) {
-            sprite = spr_no_bad_omen;
-        }
-        else {
-            sprite = spr_bad_omen;
-        }
-        draw_sprite(sprite, 0, obj_main.display_width - 64, 200 + 48 * i);
-    }
-
-    if (instance_exists(player_0)) for (var i = 0; i &lt; player_0.life_points; ++i) draw_sprite_ext(spr_heart, 0, 8 + i * (sprite_get_width(spr_heart) + 4), 8, 1, 1, 0, player_0.color, 1);
-    if (instance_exists(player_1)) for (var i = 0; i &lt; player_1.life_points; ++i) draw_sprite_ext(spr_heart, 0, obj_main.display_width - 8 - (i + 1) * (sprite_get_width(spr_heart) + 4), 8, 1, 1, 0, player_1.color, 1);
-    
-    if(winner) {
-        var str = "Player " + string(winner) + "#is victorious!";
-        draw_set_font(ft_big); draw_set_halign(fa_center); draw_set_valign(fa_middle); draw_set_color(c_dkgray);
-        draw_text(obj_main.display_width / 2, obj_main.display_height / 2, str);
-    }
-}
-</string>
+            <string></string>
           </argument>
         </arguments>
       </action>

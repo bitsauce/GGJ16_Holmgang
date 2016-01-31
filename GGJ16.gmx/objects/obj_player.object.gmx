@@ -61,6 +61,8 @@ greeting_timer = 0.0;
 greeting_active = false;
 rain_dance_timer = 0.0;
 rain_dance_active = false;
+omen_damage_timer = 0.0;
+inside = false;
 
 toast_sound = 0;
 footstep_sounds = ds_list_create();
@@ -164,6 +166,7 @@ if(respawn) {
     life_points--;
     respawn_timer = 5.0;
     respawn = false;
+    inside = false;
     obj_camera.screenshake_x = 10; obj_camera.screenshake_y = 10;
     var w = sprite_get_width(spr_player), h = sprite_get_height(spr_player), x_start = x - sprite_get_xoffset(spr_player), y_start = y + 2 - sprite_get_yoffset(spr_player);
     if (scale_x &gt; 0) {
@@ -184,8 +187,8 @@ if(respawn) {
         for (var t_y = 0; t_y &lt; h; t_y += 4) {
             for (var t_x = 0; t_x &lt; w; t_x += 4) {
                 with (instance_create(x_start + t_x, y_start + t_y, obj_fragment)) {
-                        x_0 = w - 4 - t_x; y_0 = t_y;
-                        image_xscale = -1;
+                    x_0 = w - 4 - t_x; y_0 = t_y;
+                    image_xscale = -1;
                     direction = point_direction(w * 0.5, h * 0.9, t_x, t_y);
                     speed = random_range(2, 4);
                     sprite_index = other.spr_player;
@@ -198,6 +201,9 @@ if(respawn) {
     if(omen_points &lt;= 0) omen_points = 3;
     spr_player = spr_player_idle;
 }
+
+if(life_points &lt;= 0) exit;
+
 var t = respawn_timer;
 respawn_timer -= 1.0 / room_speed;
 if(respawn_timer &lt; 2.5) {
@@ -315,6 +321,40 @@ if(respawn_timer &lt; 2.5) {
             spr_player = spr_player_idle;
         }
     }
+    
+    if(place_meeting(x, y, obj_inside_block)) {
+        inside = true;
+    }
+    else if(place_meeting(x, y, obj_outside_block)) {
+        inside = false;
+    }
+    
+    if(instance_exists(obj_ui_message_big) &amp;&amp; obj_ui_message_big.timer &gt;= 240 &amp;&amp; omen_damage_timer &lt; 0.0) {
+        // No jump! 
+        if (obj_ui_message_big.message == 0 &amp;&amp; on_ground &amp;&amp; keyboard_check_pressed(key_jump)) {
+            omen_points--;
+            omen_damage_timer = 2.0;
+        }
+        
+        // Dance!
+        if (obj_ui_message_big.message == 1 &amp;&amp; spr_player != spr_player_dance) {
+            omen_points--;
+            omen_damage_timer = 2.0;
+        }
+        
+        // Dont face right!
+        if (obj_ui_message_big.message == 2 &amp;&amp; scale_x &lt; 0) {
+            omen_points--;
+            omen_damage_timer = 2.0;
+        }
+        
+        // Get inside!
+        if (obj_ui_message_big.message == 3 &amp;&amp; !inside) {
+            omen_points--;
+            omen_damage_timer = 2.0;
+        }
+    }
+    omen_damage_timer -= 1.0 / room_speed;
     
     // Jump
     if (on_ground) {
@@ -455,7 +495,7 @@ if(respawn_timer &lt; 2.5) {
     // Opening doors
     if(keyboard_check_pressed(key_aim_up) &amp;&amp; !bow_attack) {
         var door = instance_nearest(x, y, obj_door);
-        if(!place_meeting(x, y, door) &amp;&amp; point_distance(x, y, door.x, door.y) &lt; 100) {
+        if(!place_meeting(x, y, door) &amp;&amp; point_distance(x, y, door.x, door.y) &lt; 100 &amp;&amp; ((x &lt; door.x &amp;&amp; scale_x &gt; 0) || (x &gt; door.x &amp;&amp; scale_x &lt; 0))) {
             if(door.open) audio_play_sound(snd_door_close, 0, false);
             else audio_play_sound(snd_door_open, 0, false);
             door.open = !door.open;
