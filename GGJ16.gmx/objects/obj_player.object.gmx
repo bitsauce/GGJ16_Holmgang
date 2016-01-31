@@ -61,6 +61,8 @@ greeting_timer = 0.0;
 greeting_active = false;
 rain_dance_timer = 0.0;
 rain_dance_active = false;
+omen_damage_timer = 0.0;
+inside = false;
 
 toast_sound = 0;
 footstep_sounds = ds_list_create();
@@ -164,6 +166,7 @@ if(respawn) {
     life_points--;
     respawn_timer = 5.0;
     respawn = false;
+    inside = false;
     obj_camera.screenshake_x = 10; obj_camera.screenshake_y = 10;
     var w = sprite_get_width(spr_player), h = sprite_get_height(spr_player), x_start = x - sprite_get_xoffset(spr_player), y_start = y + 2 - sprite_get_yoffset(spr_player);
     if (scale_x &gt; 0) {
@@ -318,6 +321,40 @@ if(respawn_timer &lt; 2.5) {
             spr_player = spr_player_idle;
         }
     }
+    
+    if(place_meeting(x, y, obj_inside_block)) {
+        inside = true;
+    }
+    else if(place_meeting(x, y, obj_outside_block)) {
+        inside = false;
+    }
+    
+    if(instance_exists(obj_ui_message_big) &amp;&amp; obj_ui_message_big.timer &gt;= 240 &amp;&amp; omen_damage_timer &lt; 0.0) {
+        // No jump! 
+        if (obj_ui_message_big.message == 0 &amp;&amp; on_ground &amp;&amp; keyboard_check_pressed(key_jump)) {
+            omen_points--;
+            omen_damage_timer = 2.0;
+        }
+        
+        // Dance!
+        if (obj_ui_message_big.message == 1 &amp;&amp; spr_player != spr_player_dance) {
+            omen_points--;
+            omen_damage_timer = 2.0;
+        }
+        
+        // Dont face right!
+        if (obj_ui_message_big.message == 2 &amp;&amp; scale_x &lt; 0) {
+            omen_points--;
+            omen_damage_timer = 2.0;
+        }
+        
+        // Get inside!
+        if (obj_ui_message_big.message == 3 &amp;&amp; !inside) {
+            omen_points--;
+            omen_damage_timer = 2.0;
+        }
+    }
+    omen_damage_timer -= 1.0 / room_speed;
     
     // Jump
     if (on_ground) {
