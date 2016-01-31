@@ -56,6 +56,8 @@ bell_timer = 0.0;
 bell_active = false;
 door_timer = 0.0;
 door_active = false;
+greeting_timer = 3.0;
+greeting_active = true;
 
 weapon_x = ds_map_create();
 weapon_y = ds_map_create();
@@ -116,6 +118,17 @@ weapon_x[? spr_player_swing] = list_x;
 weapon_y[? spr_player_swing] = list_y;
 weapon_angle[? spr_player_swing] = list_angle;
 weapon_behind[? spr_player_swing] = false;
+
+list_x = ds_list_create();
+list_y = ds_list_create();
+list_angle = ds_list_create();
+ds_list_add(list_x, 60, 59, 64, 68, 62, 56);
+ds_list_add(list_y, 43, 50, 42, 28, 11, 11);
+ds_list_add(list_angle, -5, -15, -5, -5, -5, 0);
+weapon_x[? spr_player_toast] = list_x;
+weapon_y[? spr_player_toast] = list_y;
+weapon_angle[? spr_player_toast] = list_angle;
+weapon_behind[? spr_player_toast] = false;
 </string>
           </argument>
         </arguments>
@@ -151,7 +164,7 @@ weapon_behind[? spr_player_swing] = false;
 respawn_timer -= 1.0 / room_speed;
 if(respawn_timer &lt; 2.5) {
     x_previous = x; y_previous = y;
-    var can_move = spr_player != spr_player_kneeling &amp;&amp; spr_player != spr_player_draw_bow &amp;&amp; spr_player != spr_player_swing;
+    var can_move = spr_player != spr_player_kneeling &amp;&amp; spr_player != spr_player_dance &amp;&amp; spr_player != spr_player_toast &amp;&amp; spr_player != spr_player_draw_bow &amp;&amp; spr_player != spr_player_swing;
     
     // Changes velocity.
     velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x * can_move, velocity_x - acceleration_x, velocity_x + acceleration_x);
@@ -175,6 +188,20 @@ if(respawn_timer &lt; 2.5) {
     else if(spr_player == spr_player_draw_bow) {
         if(animation_index &gt;= sprite_get_number(spr_player_draw_bow) - 1) {
             animation_index = sprite_get_number(spr_player_draw_bow) - 1 - (1 - aim_up);
+        }
+    }
+    else if(spr_player == spr_player_toast) {
+        if(keyboard_check_released(key_aim_up) || keyboard_check_pressed(key_aim_up)) {
+            animation_speed *= -1;
+        }
+        else if(animation_index &gt; sprite_get_number(spr_player_toast) - 1) {
+            animation_index = sprite_get_number(spr_player_toast) - 1;
+            greeting_active = false;
+        }
+        else if(animation_index &lt; 0.0) {
+            spr_player =  spr_player_idle;
+            animation_speed *= -1;
+            animation_index = 0.0;
         }
     }
     else if(spr_player == spr_player_kneeling) {
@@ -201,6 +228,10 @@ if(respawn_timer &lt; 2.5) {
         }
         else if(equiped_weapon == 1 &amp;&amp; keyboard_check_pressed(key_attack)) {
             spr_player = spr_player_draw_bow;
+            animation_index = 0.0;
+        }
+        else if(keyboard_check_pressed(key_aim_up)) {
+            spr_player = spr_player_toast;
             animation_index = 0.0;
         }
         else if(keyboard_check_pressed(key_aim_down)) {
@@ -356,6 +387,13 @@ if(respawn_timer &lt; 2.5) {
             door.timer = 3.0;
         }
     }
+    
+    // Greeting
+    if(greeting_active &amp;&amp; greeting_timer &lt; 0.0) {
+        omen_points--;
+        greeting_active = false;
+    }
+    greeting_timer -= 1.0 / room_speed;
 }
 
 // Weapon switching
