@@ -288,14 +288,14 @@ if(respawn_timer &lt; 2.5) {
             }
         }
     }
-    
+            
     // Arrow firing
     if (equiped_weapon == 1) {
         if (!bow_attack) {
             if (keyboard_check_pressed(key_attack)) {
                 animation_index = 0.0;
                 bow_attack = true;
-                aim_up = false;
+                aim_up = keyboard_check(key_aim_up);
             }
         }
         else {
