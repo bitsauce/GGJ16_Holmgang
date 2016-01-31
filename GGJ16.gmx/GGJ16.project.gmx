@@ -43,8 +43,8 @@
     <sprite>sprites\spr_chair_front</sprite>
     <sprite>sprites\spr_banner</sprite>
     <sprite>sprites\spr_bell</sprite>
-    <sprite>sprites\spr_door</sprite>
     <sprite>sprites\spr_sun_moon</sprite>
+    <sprite>sprites\spr_door</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -91,6 +91,7 @@
     <object>objects\obj_carpet</object>
     <object>objects\obj_banner</object>
     <object>objects\obj_bell</object>
+    <object>objects\obj_door</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_main</room>
