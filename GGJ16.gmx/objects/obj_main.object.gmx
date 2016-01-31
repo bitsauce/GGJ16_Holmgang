@@ -221,6 +221,7 @@ shader_reset();
 
 with (obj_day_night) event_perform(ev_draw, ev_gui);
 with (obj_ui) event_perform(ev_draw, ev_gui);
+with (obj_ui_message_big) event_perform(ev_draw, ev_gui);
 
 if (in_menu != -1) {
     draw_sprite(spr_ui_borders, 0, 0, -in_menu_timer_0 * sprite_get_height(spr_ui_borders));
@@ -272,6 +273,13 @@ if (in_menu != -1) {
         color = night;
     } else {
         color = day;
+    }
+    if (obj_main.in_menu == -1) {
+        var t = obj_day_night.time / 60, p = obj_day_night.time_previous / 60;
+        if (p &lt; 0.55 &amp;&amp; t &gt;= 0.55) with (instance_create(0, 0, obj_ui_message_big)) message = 1;
+        if (p &lt; 0.8 &amp;&amp; t &gt;= 0.8) with (instance_create(0, 0, obj_ui_message_big)) message = 2;
+        if (p &lt; 0.05 &amp;&amp; t &gt;= 0.05) with (instance_create(0, 0, obj_ui_message_big)) message = 3;
+        if (p &lt; 0.2 &amp;&amp; t &gt;= 0.2) with (instance_create(0, 0, obj_ui_message_big)) message = 0;
     }
     draw_clear(color);
     draw_background_tiled_ext(bg_stars, 0, 0, 1, 1, c_white, alpha);

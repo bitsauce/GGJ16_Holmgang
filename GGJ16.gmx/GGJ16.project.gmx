@@ -63,6 +63,7 @@
     <sprite>sprites\spr_sun_moon</sprite>
     <sprite>sprites\spr_door</sprite>
     <sprite>sprites\spr_door_open</sprite>
+    <sprite>sprites\spr_ui_message</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_stars</background>
@@ -120,6 +121,7 @@
     <object>objects\obj_banner</object>
     <object>objects\obj_bell</object>
     <object>objects\obj_door</object>
+    <object>objects\obj_ui_message_big</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_main</room>
