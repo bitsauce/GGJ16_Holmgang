@@ -508,6 +508,9 @@
     <instance objName="obj_slope_1" x="2256" y="1216" name="inst_F3ED6C3A" locked="0" code="" scaleX="0.5" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_slope_0" x="2368" y="912" name="inst_C38F2BDE" locked="0" code="" scaleX="0.5" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_slope_0" x="1728" y="1600" name="inst_6A07E1D9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_chair_side" x="2058" y="1563" name="inst_0DF6E796" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_table" x="2083" y="1564" name="inst_AD9527A8" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_chair_side" x="2204" y="1564" name="inst_811ECF08" locked="0" code="" scaleX="-1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>
