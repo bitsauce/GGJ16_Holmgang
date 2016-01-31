@@ -89,6 +89,6 @@ void main()
     vec4 reflected = texture2D(texture_sf_water_reflection, vec2(v_vTexcoord.x, 2.0 * reflection_y - v_vTexcoord.y) + offset * vec2(0.005, 0.01));
     gl_FragColor.rgb = mix(gl_FragColor.rgb, reflected.rgb, gl_FragColor.a * 0.3);
     
-    gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0), 0.02 * float(fractal_noise_3d(4, vec3(v_vTexcoord + vec2(time * 10.0, 0.0), time * 2.0), vec3(5.0, 50.0, 5.0)) < 0.5 - (1.0 - v_vTexcoord.y)));
+    gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0), 0.02 * float(fractal_noise_3d(2, vec3(v_vTexcoord + vec2(time * 10.0, 0.0), time * 2.0), vec3(5.0, 50.0, 5.0)) < 0.5 - (1.0 - v_vTexcoord.y)));
 }
 

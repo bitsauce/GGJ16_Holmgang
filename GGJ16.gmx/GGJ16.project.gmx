@@ -43,6 +43,7 @@
     <sprite>sprites\spr_chair_front</sprite>
     <sprite>sprites\spr_banner</sprite>
     <sprite>sprites\spr_bell</sprite>
+    <sprite>sprites\spr_sun_moon</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -65,6 +66,7 @@
     <object>objects\obj_parent_collision_stop</object>
     <object>objects\obj_parent_collision</object>
     <object>objects\obj_parent_collision_jump_through</object>
+    <object>objects\obj_parent_furniture</object>
     <object>objects\obj_arrow</object>
     <object>objects\obj_initial_spawn_point</object>
     <object>objects\obj_spawn_point</object>
