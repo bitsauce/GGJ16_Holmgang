@@ -50,39 +50,7 @@ winner = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (instance_exists(obj_player)) {
-    for (var i = 0; i &lt; 3; i++) {
-        var sprite;
-        if (i &lt; player_0.omen_points) {
-            sprite = spr_no_bad_omen;
-        }
-        else {
-            sprite = spr_bad_omen;
-        }
-        draw_sprite(sprite, 0, 32, 200 + 48 * i);
-    }
-    
-    for (var i = 0; i &lt; 3; i++) {
-        var sprite;
-        if (i &lt; player_1.omen_points) {
-            sprite = spr_no_bad_omen;
-        }
-        else {
-            sprite = spr_bad_omen;
-        }
-        draw_sprite(sprite, 0, obj_main.display_width - 64, 200 + 48 * i);
-    }
-
-    /*draw_text(5, 5, "Lives: " + string(player_0.life_points));
-    var p2str = "Lives: " + string(player_1.life_points)
-    draw_text(obj_main.display_width - string_width(p2str) - 5, 5, p2str);
-    
-    if(winner) {
-        var str = "Player " + string(winner) + "#is victorious";
-        draw_text(obj_main.display_width / 2 - string_width(str) / 2, obj_main.display_height / 2 - string_height(str) / 2, str);
-    }*/
-}
-</string>
+            <string></string>
           </argument>
         </arguments>
       </action>
