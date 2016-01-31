@@ -53,14 +53,19 @@ view_yview = 0;
             <kind>1</kind>
             <string>var x_0 = obj_main.player_0.x, y_0 = obj_main.player_0.y, x_1 = obj_main.player_1.x, y_1 = obj_main.player_1.y;
 
-var target_scale = max(abs(x_1 - x_0) * 1.5, abs(y_1 - y_0) * 1.5);
-scale = scale + (target_scale - scale) * 0.01;
+var scale = max(abs(x_1 - x_0) * 1.5, abs(y_1 - y_0) * 1.5);
+//scale = scale + (target_scale - scale) * 0.01;
 view_wview = max(obj_main.display_width, round(scale));
 view_hview = max(obj_main.display_height, round(scale * (obj_main.display_height / obj_main.display_width)));
 
 var target_x = mean(x_0, x_1) - view_wview * 0.5, target_y = mean(y_0, y_1) - view_hview * 0.5;
 view_xview = round(view_xview + (target_x - view_xview) * 0.1);
 view_yview = round(view_yview + (target_y - view_yview) * 0.1);
+
+view_xview[1] = view_xview;
+view_yview[1] = view_yview;
+view_wview[1] = view_wview;
+view_hview[1] = view_hview;
 </string>
           </argument>
         </arguments>

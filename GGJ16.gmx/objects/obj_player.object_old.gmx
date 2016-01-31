@@ -2,7 +2,7 @@
 <object>
   <spriteName>spr_mask_player</spriteName>
   <solid>0</solid>
-  <visible>-1</visible>
+  <visible>0</visible>
   <depth>-10</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
@@ -33,6 +33,7 @@ arrow_power = 0.0;
 scale_x = 1.0;
 key_aim_up = vk_up;
 key_aim_down = vk_down;
+key_move_down = vk_down;
 key_move_left = vk_left;
 key_move_right = vk_right;
 key_attack = vk_lshift;
@@ -217,21 +218,32 @@ if(respawn_timer &lt; 2.5) {
         velocity_y += gravity_y;
     }
     
+    var fall_through_jump_through_collision = keyboard_check(key_move_down) || place_meeting(x, y, obj_parent_collision_jump_through);
+    
     // Collision vertically.
     if (velocity_y &gt; 0) {
+        if (fall_through_jump_through_collision) with (obj_parent_collision_jump_through) solid = false;
         move_contact_solid(270, velocity_y);
+        if (fall_through_jump_through_collision) with (obj_parent_collision_jump_through) solid = true;
     } else if (velocity_y &lt; 0) {
+        with (obj_parent_collision_jump_through) solid = false;
         move_contact_solid(90, -velocity_y);
+        with (obj_parent_collision_jump_through) solid = true;
         if (place_meeting(x, y - 1, obj_parent_collision)) velocity_y = 0;
     }
-    on_ground = place_meeting(x, y + 1, obj_parent_collision);
+    on_ground = place_meeting(x, y + 1, obj_parent_collision) || (place_meeting(x, y + 1, obj_parent_collision_jump_through) &amp;&amp; !fall_through_jump_through_collision &amp;&amp; velocity_y &gt;= 0);
     
     // Collision horizontally.
     if (velocity_x &gt; 0) {
         scale_x = 1;
         if (place_meeting(x + velocity_x, y, obj_slope_1)) {
-            x += velocity_x * 0.6;
+            with (obj_parent_collision_jump_through) solid = false;
+            x += velocity_x * 0.65;
             move_outside_solid(90, -1);
+            with (obj_parent_collision_jump_through) solid = true;
+        } else if (!fall_through_jump_through_collision &amp;&amp; place_meeting(x + velocity_x, y, obj_slope_1_jump_through)) {
+            x += velocity_x * 0.65;
+            move_outside_solid(90, -1);        
         } else if (place_meeting(x + velocity_x, y, obj_parent_collision_stop)) {
             move_contact_solid(0, velocity_x);
             velocity_x = 0;
@@ -241,7 +253,12 @@ if(respawn_timer &lt; 2.5) {
     } else if (velocity_x &lt; 0) {
         scale_x = -1;
         if (place_meeting(x + velocity_x, y, obj_slope_0)) {
-            x += velocity_x * 0.6;
+            with (obj_parent_collision_jump_through) solid = false;
+            x += velocity_x * 0.65;
+            move_outside_solid(90, -1);
+            with (obj_parent_collision_jump_through) solid = true;
+        } else if (!fall_through_jump_through_collision &amp;&amp; place_meeting(x + velocity_x, y, obj_slope_0_jump_through)) {
+            x += velocity_x * 0.65;
             move_outside_solid(90, -1);
         } else if (place_meeting(x + velocity_x, y, obj_parent_collision_stop)) {
             move_contact_solid(180, -velocity_x);
@@ -308,29 +325,9 @@ if(!swing_attack) {
         equiped_weapon = (equiped_weapon + 1) % 2;
    }
 }
+
+x = clamp(x, 478, 5353);
 </string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="8" enumb="64">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string></string>
           </argument>
         </arguments>
       </action>
@@ -356,7 +353,7 @@ if(!swing_attack) {
     placement = ds_map_exists(weapon_x, spr_player) &amp;&amp; ds_map_exists(weapon_y, spr_player) &amp;&amp; ds_map_exists(weapon_angle, spr_player);
     behind = ds_map_exists(weapon_behind, spr_player) &amp;&amp; ds_map_find_value(weapon_behind, spr_player);
     if(!behind) {
-        draw_sprite_ext(spr_player, animation_index, x, y, scale_x, 1, 0, color, 1);
+        draw_sprite_ext(spr_player, animation_index, x, y - 2, scale_x, 1, 0, color, 1);
     }
     if(placement) {
         var angle;
@@ -384,7 +381,7 @@ if(!swing_attack) {
             1, scale_x, angle, c_white, 1);
     }
     if(behind) {
-        draw_sprite_ext(spr_player, animation_index, x, y, scale_x, 1, 0, color, 1);
+        draw_sprite_ext(spr_player, animation_index, x, y - 2, scale_x, 1, 0, color, 1);
     }
 }
 </string>
