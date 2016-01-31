@@ -30,6 +30,7 @@
     <sprite>sprites\spr_sword</sprite>
     <sprite>sprites\spr_chair_side</sprite>
     <sprite>sprites\spr_chest_closed</sprite>
+    <sprite>sprites\spr_carpet</sprite>
     <sprite>sprites\spr_chest_open</sprite>
     <sprite>sprites\spr_comfy_bed</sprite>
     <sprite>sprites\spr_table</sprite>
@@ -38,6 +39,8 @@
     <sprite>sprites\spr_antlers</sprite>
     <sprite>sprites\spr_bed_side</sprite>
     <sprite>sprites\spr_chair_front</sprite>
+    <sprite>sprites\spr_banner</sprite>
+    <sprite>sprites\spr_bell</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -64,6 +67,17 @@
     <object>objects\obj_foreground_1</object>
     <object>objects\obj_chair_side</object>
     <object>objects\obj_table</object>
+    <object>objects\obj_throne_side</object>
+    <object>objects\obj_chair_front</object>
+    <object>objects\obj_bed_side</object>
+    <object>objects\obj_comfy_bed</object>
+    <object>objects\obj_chest_closed</object>
+    <object>objects\obj_chest_open</object>
+    <object>objects\obj_cupboard</object>
+    <object>objects\obj_antlers</object>
+    <object>objects\obj_carpet</object>
+    <object>objects\obj_banner</object>
+    <object>objects\obj_bell</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_main</room>

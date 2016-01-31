@@ -291,6 +291,15 @@ if(respawn_timer &lt; 2.5) {
             }
         }
     }
+    
+    // Hitting bells
+    if(swing_attack) {
+        var bell = instance_place(x, y, obj_bell)
+        if(bell &amp;&amp; bell.swing_time &gt; 20.0) {
+            // TODO: Force the the other player to bow
+            bell.swing_time = 0.0;
+        }
+    }
 }
 
 // Weapon switching
