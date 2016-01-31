@@ -144,12 +144,15 @@ if (in_menu != -1) {
         else {
             in_menu = -1;
             obj_day_night.time = 0.6 * 60;
+            
+            // Start greeting ritual
+            player_0.greeting_active = true;
+            player_0.greeting_timer = 3.0;
+            player_1.greeting_active = true;
+            player_1.greeting_timer = 3.0;
         }
     }
 } else {
-    if (keyboard_check_pressed(ord("1"))) player_0.omen_points++;
-    if (keyboard_check_pressed(ord("2"))) player_1.omen_points++;
-    
     var done = false;
     if(player_0.life_points &lt;= 0) {
         obj_ui.winner = 2;
