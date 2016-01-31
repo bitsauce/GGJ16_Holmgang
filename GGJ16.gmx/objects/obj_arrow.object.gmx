@@ -99,10 +99,7 @@ else {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var scale;
-if(velocity_x &lt; 0) scale = -1;
-else scale = 1;
-draw_sprite_ext(spr_arrow, image_index, x, y, scale, 1, darctan2(-velocity_y, velocity_x), image_blend, image_alpha);
+            <string>draw_sprite_ext(spr_arrow, image_index, x, y, 1, 1, point_direction(x, y, x + velocity_x, y + velocity_y), image_blend, image_alpha);
 </string>
           </argument>
         </arguments>
