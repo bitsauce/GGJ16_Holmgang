@@ -4,13 +4,29 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\snd_swing</sound>
+    <sound>sound\snd_switch_weapon</sound>
+    <sound>sound\snd_bell</sound>
+    <sound>sound\snd_bow_draw</sound>
+    <sound>sound\snd_bow_hold</sound>
+    <sound>sound\snd_bow_shoot</sound>
+    <sound>sound\snd_footstep_2</sound>
+    <sound>sound\snd_footstep_3</sound>
+    <sound>sound\snd_footstep_4</sound>
+    <sound>sound\snd_footstep_1</sound>
+  </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_block</sprite>
     <sprite>sprites\spr_block_small</sprite>
     <sprite>sprites\spr_mask_player</sprite>
     <sprite>sprites\spr_player_idle</sprite>
     <sprite>sprites\spr_player_run</sprite>
+    <sprite>sprites\spr_player_dance</sprite>
+    <sprite>sprites\spr_player_turn</sprite>
+    <sprite>sprites\spr_player_swing</sprite>
+    <sprite>sprites\spr_player_draw_bow</sprite>
+    <sprite>sprites\spr_player_toast</sprite>
     <sprite>sprites\spr_slope_0</sprite>
     <sprite>sprites\spr_slope_1</sprite>
     <sprite>sprites\spr_slope_2</sprite>
@@ -18,9 +34,6 @@
     <sprite>sprites\spr_arrow</sprite>
     <sprite>sprites\spr_bad_omen</sprite>
     <sprite>sprites\spr_no_bad_omen</sprite>
-    <sprite>sprites\spr_player_swing</sprite>
-    <sprite>sprites\spr_player_turn</sprite>
-    <sprite>sprites\spr_player_draw_bow</sprite>
     <sprite>sprites\spr_background_0</sprite>
     <sprite>sprites\spr_background_1</sprite>
     <sprite>sprites\spr_foreground_0</sprite>
@@ -45,6 +58,8 @@
     <sprite>sprites\spr_banner</sprite>
     <sprite>sprites\spr_bell</sprite>
     <sprite>sprites\spr_sun_moon</sprite>
+    <sprite>sprites\spr_door</sprite>
+    <sprite>sprites\spr_door_open</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_stars</background>
@@ -101,6 +116,7 @@
     <object>objects\obj_carpet</object>
     <object>objects\obj_banner</object>
     <object>objects\obj_bell</object>
+    <object>objects\obj_door</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_main</room>

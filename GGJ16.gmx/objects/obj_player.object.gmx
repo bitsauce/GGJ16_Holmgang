@@ -53,6 +53,17 @@ swing_attack = false;
 spr_player = spr_player_idle;
 color = c_black;
 bow_attack = false;
+bell_timer = 0.0;
+bell_active = false;
+door_timer = 0.0;
+door_active = false;
+greeting_timer = 3.0;
+greeting_active = true;
+rain_dance_timer = 0.0;
+rain_dance_active = false;
+
+footstep_sounds = ds_list_create();
+ds_list_add(footstep_sounds, snd_footstep_1, snd_footstep_2, snd_footstep_3, snd_footstep_4);
 
 weapon_x = ds_map_create();
 weapon_y = ds_map_create();
@@ -113,6 +124,17 @@ weapon_x[? spr_player_swing] = list_x;
 weapon_y[? spr_player_swing] = list_y;
 weapon_angle[? spr_player_swing] = list_angle;
 weapon_behind[? spr_player_swing] = false;
+
+list_x = ds_list_create();
+list_y = ds_list_create();
+list_angle = ds_list_create();
+ds_list_add(list_x, 60, 59, 64, 68, 62, 56);
+ds_list_add(list_y, 43, 50, 42, 28, 11, 11);
+ds_list_add(list_angle, -5, -15, -5, -5, -5, 0);
+weapon_x[? spr_player_toast] = list_x;
+weapon_y[? spr_player_toast] = list_y;
+weapon_angle[? spr_player_toast] = list_angle;
+weapon_behind[? spr_player_toast] = false;
 </string>
           </argument>
         </arguments>
@@ -172,6 +194,8 @@ if(respawn) {
             }
         }
     }
+    if(omen_points &lt;= 0) omen_points = 3;
+    spr_player = spr_player_idle;
 }
 var t = respawn_timer;
 respawn_timer -= 1.0 / room_speed;
@@ -182,7 +206,7 @@ if(respawn_timer &lt; 2.5) {
         y = spawn_point.y;
     }
     x_previous = x; y_previous = y;
-    var can_move = spr_player != spr_player_kneeling &amp;&amp; spr_player != spr_player_draw_bow &amp;&amp; spr_player != spr_player_swing;
+    var can_move = spr_player != spr_player_kneeling &amp;&amp; spr_player != spr_player_dance &amp;&amp; spr_player != spr_player_toast &amp;&amp; spr_player != spr_player_draw_bow &amp;&amp; spr_player != spr_player_swing;
     
     // Changes velocity.
     velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x * can_move * can_control, velocity_x - acceleration_x, velocity_x + acceleration_x);
@@ -190,7 +214,14 @@ if(respawn_timer &lt; 2.5) {
     // Changes animation.
     animation_index += animation_speed;
     
-    if (spr_player == spr_player_swing) {
+    if(omen_points &lt;= 0) {
+        if(spr_player != spr_player_kneeling) animation_index = 0.0;
+        spr_player = spr_player_kneeling;
+        if(animation_index &gt; sprite_get_number(spr_player_kneeling) - 1) {
+            respawn = true;
+        }
+    }
+    else if (spr_player == spr_player_swing) {
         if(animation_index &gt;= sprite_get_number(spr_player_swing)) {
             spr_player = spr_player_idle;
             swing_attack = false;
@@ -201,16 +232,38 @@ if(respawn_timer &lt; 2.5) {
             animation_index = sprite_get_number(spr_player_draw_bow) - 1 - (1 - aim_up);
         }
     }
+    else if(spr_player == spr_player_toast) {
+        if(keyboard_check_released(key_aim_up) || keyboard_check_pressed(key_aim_up)) {
+            animation_speed *= -1;
+        }
+        else if(animation_index &gt; sprite_get_number(spr_player_toast) - 1) {
+            animation_index = sprite_get_number(spr_player_toast) - 1;
+            greeting_active = false;
+        }
+        else if(animation_index &lt; 0.0) {
+            spr_player =  spr_player_idle;
+            animation_speed *= -1;
+            animation_index = 0.0;
+        }
+    }
     else if(spr_player == spr_player_kneeling) {
         if(keyboard_check_released(key_aim_down) * can_control || keyboard_check_pressed(key_aim_down) * can_control) {
             animation_speed *= -1;
         }
         else if(animation_index &gt; sprite_get_number(spr_player_kneeling) - 1) {
             animation_index = sprite_get_number(spr_player_kneeling) - 1;
+            bell_active = false;
         }
         else if(animation_index &lt; 0.0) {
             spr_player =  spr_player_idle;
             animation_speed *= -1;
+            animation_index = 0.0;
+        }
+    }
+    else if(spr_player == spr_player_dance) {
+        if(!keyboard_check(key_move_left) || !keyboard_check(key_move_right) /*||
+           animation_index &gt; sprite_get_number(spr_player_dance) - 1*/) {
+            spr_player =  spr_player_idle;
             animation_index = 0.0;
         }
     }
@@ -220,9 +273,18 @@ if(respawn_timer &lt; 2.5) {
             spr_player = spr_player_swing;
             animation_index = 0.0;
             swing_attack = true;
+            audio_play_sound(snd_swing, 0, false);
         }
         else if(equiped_weapon == 1 &amp;&amp; keyboard_check_pressed(key_attack) * can_control) {
             spr_player = spr_player_draw_bow;
+            animation_index = 0.0;
+        }
+        else if(keyboard_check_pressed(key_move_left) &amp;&amp; keyboard_check_pressed(key_move_right)) {
+            spr_player = spr_player_dance;
+            animation_index = 0.0;
+        }
+        else if(keyboard_check_pressed(key_aim_up)) {
+            spr_player = spr_player_toast;
             animation_index = 0.0;
         }
         else if(keyboard_check_pressed(key_aim_down)) {
@@ -238,10 +300,14 @@ if(respawn_timer &lt; 2.5) {
         else if(keyboard_check(key_move_left) * can_control &amp;&amp; velocity_x &gt; 0.0) {
             spr_player = spr_player_turn;
         }
-        else if (abs(velocity_x) &gt; 0)
+        else if (abs(velocity_x) &gt; 0) {
             spr_player = spr_player_run;
-        else
+            var frame_idx = floor(animation_index) % sprite_get_number(spr_player_run);
+            if(frame_idx == 4 || frame_idx == 9) audio_play_sound(footstep_sounds[| irandom(3)], 0, false);
+        }
+        else {
             spr_player = spr_player_idle;
+        }
     }
     
     // Jump
@@ -308,33 +374,37 @@ if(respawn_timer &lt; 2.5) {
         }
     }
     
-    if(respawn_timer &lt; 0.0) {
-        if(id == obj_main.player_0) {
-            if(instance_place(x, y, obj_main.player_1)) {
-                if(obj_main.player_1.swing_attack) {
-                    respawn = true;
+    // Player to player swing attack
+    if(respawn_timer &lt; 0.0 &amp;&amp; other_player.respawn_timer &lt; 0.0) {
+        if(instance_place(x, y, other_player)) {
+            if(other_player.swing_attack) {
+                if(swing_attack) {
+                    other_player.swing_attack = false;
+                    other_player.spr_player = spr_player_idle;
+                    swing_attack = false;
+                    spr_player = spr_player_idle;
                 }
-            }
-        }
-        else if(obj_main.player_0.respawn_timer &lt; 0.0) {
-            if(instance_place(x, y, obj_main.player_0)) {
-                if(obj_main.player_0.swing_attack) {
+                else {
                     respawn = true;
                 }
             }
         }
     }
-    
+            
     // Arrow firing
     if (equiped_weapon == 1) {
         if (!bow_attack) {
             if (keyboard_check_pressed(key_attack) * can_control) {
                 animation_index = 0.0;
                 bow_attack = true;
-                aim_up = false;
+                aim_up = keyboard_check(key_aim_up);
+                bow_sound = audio_play_sound(snd_bow_draw, 0, false);
             }
         }
         else {
+            if(!audio_is_playing(bow_sound)) {
+                bow_sound = audio_play_sound(snd_bow_hold, 0, true);
+            }
             if(keyboard_check_pressed(key_aim_up) * can_control) aim_up = true;
             else if(keyboard_check_released(key_aim_down) * can_control) aim_up = false;
             if (animation_index &gt;= sprite_get_number(spr_player_draw_bow) - 2 &amp;&amp; !keyboard_check(key_attack) * can_control) {
@@ -345,23 +415,51 @@ if(respawn_timer &lt; 2.5) {
                 arrow.owner = id;
                 bow_attack = false;
                 spr_player = spr_player_idle;
+                audio_stop_sound(bow_sound);
+                audio_play_sound(snd_bow_shoot, 0, false);
             }
         }
     }
     
     // Hitting bells
     if(swing_attack) {
-        var bell = instance_place(x, y, obj_bell)
+        var bell = instance_place(x, y, obj_bell);
         if(bell &amp;&amp; bell.swing_time &gt; 20.0) {
-            // TODO: Force the the other player to bow
             bell.swing_time = 0.0;
+            other_player.bell_timer = 3.0;
+            other_player.bell_active = true;
+            audio_play_sound(snd_bell, 0, false);
         }
     }
+    
+    if(bell_active &amp;&amp; bell_timer &lt; 0.0) {
+        omen_points--;
+        bell_active = false;
+    }
+    bell_timer -= 1.0 / room_speed;
+    
+    // Opening doors
+    if(keyboard_check_pressed(key_aim_up) &amp;&amp; !bow_attack) {
+        var door = instance_nearest(x, y, obj_door);
+        if(!place_meeting(x, y, door) &amp;&amp; point_distance(x, y, door.x, door.y) &lt; 100) {
+            door.open = !door.open;
+            door.opened_by = id;
+            door.timer = 3.0;
+        }
+    }
+    
+    // Greeting
+    if(greeting_active &amp;&amp; greeting_timer &lt; 0.0) {
+        omen_points--;
+        greeting_active = false;
+    }
+    greeting_timer -= 1.0 / room_speed;
 }
 
 // Weapon switching
 if(!swing_attack) {
     if(keyboard_check_pressed(key_switch_weapon) * can_control) {
+        audio_play_sound(snd_switch_weapon, 0, false);
         equiped_weapon = (equiped_weapon + 1) % 2;
    }
 }
