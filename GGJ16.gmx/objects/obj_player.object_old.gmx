@@ -51,6 +51,67 @@ equiped_weapon = 0;
 swing_attack = false;
 spr_player = spr_player_idle;
 color = c_black;
+bow_attack = false;
+
+weapon_x = ds_map_create();
+weapon_y = ds_map_create();
+weapon_angle = ds_map_create();
+weapon_behind = ds_map_create();
+
+var list_x = ds_list_create();
+var list_y = ds_list_create();
+var list_angle = ds_list_create();
+ds_list_add(list_x, 69, 68, 67, 65, 63, 63, 63, 63, 65, 67, 68, 69);
+ds_list_add(list_y, 44, 44, 43, 43, 45, 45, 45, 45, 43, 43, 44, 44);
+ds_list_add(list_angle, 8 - 25, 5 - 25, 3 - 25, 2 - 25, 1 - 25, 0 - 25, 0 - 25, 1 - 25, 2 - 25, 3 - 25, 5 - 25, 8 - 25);
+weapon_x[? spr_player_idle] = list_x;
+weapon_y[? spr_player_idle] = list_y;
+weapon_angle[? spr_player_idle] = list_angle;
+weapon_behind[? spr_player_idle] = false;
+
+list_x = ds_list_create();
+list_y = ds_list_create();
+list_angle = ds_list_create();
+ds_list_add(list_x, 50, 57, 66, 71, 70, 67, 65, 63, 50, 55);
+ds_list_add(list_y, 43, 48, 48, 44, 41, 45, 47, 45, 44, 38);
+ds_list_add(list_angle, -10, -8, -4, -3, -2, -1, -1, -1, -3, -3);
+weapon_x[? spr_player_run] = list_x;
+weapon_y[? spr_player_run] = list_y;
+weapon_angle[? spr_player_run] = list_angle;
+weapon_behind[? spr_player_run] = true;
+
+list_x = ds_list_create();
+list_y = ds_list_create();
+list_angle = ds_list_create();
+ds_list_add(list_x, 60);
+ds_list_add(list_y, 45);
+ds_list_add(list_angle, -5);
+weapon_x[? spr_player_turn] = list_x;
+weapon_y[? spr_player_turn] = list_y;
+weapon_angle[? spr_player_turn] = list_angle;
+weapon_behind[? spr_player_turn] = false;
+
+list_x = ds_list_create();
+list_y = ds_list_create();
+list_angle = ds_list_create();
+ds_list_add(list_x, 65, 60, 59, 58, 57, 56, 57, 57, 59, 61, 67, 68, 68, 60);
+ds_list_add(list_y, 43, 46, 46, 47, 48, 48, 48, 48, 47, 45, 59, 28, 27, 16);
+ds_list_add(list_angle, 0, -10, -30, -30, -30, -30, -30, -30, -30, -25, -5, 0, 1, 45);
+weapon_x[? spr_player_draw_bow] = list_x;
+weapon_y[? spr_player_draw_bow] = list_y;
+weapon_angle[? spr_player_draw_bow] = list_angle;
+weapon_behind[? spr_player_draw_bow] = false;
+
+list_x = ds_list_create();
+list_y = ds_list_create();
+list_angle = ds_list_create();
+ds_list_add(list_x, 66, 65, 50, 78, 48, 33, 35, 41, 53, 62, 64, 66);
+ds_list_add(list_y, 45, 29, 17, 40, 56, 48, 45, 50, 52, 46, 46, 44);
+ds_list_add(list_angle, 70 - 90, -160 - 90, 120 - 90, 20 - 90, -105 - 90, -120 - 90, 180 - 90, 120 - 90, 100 - 90, 85 - 90, 80 - 90, 75 - 90);
+weapon_x[? spr_player_swing] = list_x;
+weapon_y[? spr_player_swing] = list_y;
+weapon_angle[? spr_player_swing] = list_angle;
+weapon_behind[? spr_player_swing] = false;
 </string>
           </argument>
         </arguments>
@@ -84,12 +145,10 @@ color = c_black;
 respawn_timer -= 1.0 / room_speed;
 if(respawn_timer &lt; 2.5) {
     x_previous = x; y_previous = y;
-    var can_move = spr_player != spr_player_kneeling || spr_player != spr_player_draw_bow || spr_player != spr_player_swing;
+    var can_move = spr_player != spr_player_kneeling &amp;&amp; spr_player != spr_player_draw_bow &amp;&amp; spr_player != spr_player_swing;
     
     // Changes velocity.
-    if(can_move) {
-        velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x, velocity_x - acceleration_x, velocity_x + acceleration_x);
-    }
+    velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x * can_move, velocity_x - acceleration_x, velocity_x + acceleration_x);
     
     // Changes animation.
     animation_index += animation_speed;
@@ -101,8 +160,8 @@ if(respawn_timer &lt; 2.5) {
         }
     }
     else if(spr_player == spr_player_draw_bow) {
-        if(animation_index &gt;= sprite_get_number(spr_player_draw_bow)) {
-            animation_index = sprite_get_number(spr_player_draw_bow) - 1;
+        if(animation_index &gt;= sprite_get_number(spr_player_draw_bow) - 1) {
+            animation_index = sprite_get_number(spr_player_draw_bow) - 1 - (1 - aim_up);
         }
     }
     else if(spr_player == spr_player_kneeling) {
@@ -115,6 +174,7 @@ if(respawn_timer &lt; 2.5) {
         else if(animation_index &lt; 0.0) {
             spr_player =  spr_player_idle;
             animation_speed *= -1;
+            animation_index = 0.0;
         }
     }
     else {
@@ -226,22 +286,24 @@ if(respawn_timer &lt; 2.5) {
     }
     
     // Arrow firing
-    if(equiped_weapon == 1) {
-        if (keyboard_check_pressed(key_attack) &amp;&amp; arrow_power == 0.0) {
-            arrow_power = 10.0;
-            animation_index = 0.0;
-        }
-        else if (animation_index &gt;= 10.0) {
-            if(keyboard_check(key_attack)) {
-                arrow_power += 10.0 / room_speed;
+    if (equiped_weapon == 1) {
+        if (!bow_attack) {
+            if (keyboard_check_pressed(key_attack)) {
+                animation_index = 0.0;
+                bow_attack = true;
+                aim_up = false;
             }
-            else if(arrow_power &gt; 0.0) {
+        }
+        else {
+            if(keyboard_check_pressed(key_aim_up)) aim_up = true;
+            else if(keyboard_check_released(key_aim_down)) aim_up = false;
+            if (animation_index &gt;= sprite_get_number(spr_player_draw_bow) - 2 &amp;&amp; !keyboard_check(key_attack)) {
                 var arrow = instance_create(x, y - 20, obj_arrow);
-                var angle = 45.0 + (keyboard_check(key_aim_up) - keyboard_check(key_aim_down)) * 22.5;
-                arrow.velocity_x = min(arrow_power, 25) * dcos(angle) * scale_x;
-                arrow.velocity_y = -min(arrow_power, 25) * dsin(angle);
+                var angle = 60.0 * aim_up;
+                arrow.velocity_x = 15.0 * dcos(angle) * scale_x * 2;
+                arrow.velocity_y = -15.0 * dsin(angle);
                 arrow.owner = id;
-                arrow_power = 0.0;
+                bow_attack = false;
                 spr_player = spr_player_idle;
             }
         }
@@ -279,7 +341,39 @@ x = clamp(x, 478, 5353);
           <argument>
             <kind>1</kind>
             <string>if(respawn_timer &lt; 0.0 || (respawn_timer &lt; 2.5 &amp;&amp; (respawn_timer % 0.5) &lt; 0.25)) {
-    draw_sprite_ext(spr_player, animation_index, x, y - 2, scale_x, 1, 0, color, 1);
+    placement = ds_map_exists(weapon_x, spr_player) &amp;&amp; ds_map_exists(weapon_y, spr_player) &amp;&amp; ds_map_exists(weapon_angle, spr_player);
+    behind = ds_map_exists(weapon_behind, spr_player) &amp;&amp; ds_map_find_value(weapon_behind, spr_player);
+    if(!behind) {
+        draw_sprite_ext(spr_player, animation_index, x, y - 2, scale_x, 1, 0, color, 1);
+    }
+    if(placement) {
+        var angle;
+        var frame_index = floor(animation_index) % sprite_get_number(spr_player);
+        var sprite;
+        
+        if(equiped_weapon == 0) {
+            sprite = spr_sword;
+        }
+        else {
+            sprite = spr_bow;
+        }
+        
+        if(scale_x &gt; 0) angle = ds_list_find_value(ds_map_find_value(weapon_angle, spr_player), frame_index);
+        else angle = 180 - ds_list_find_value(ds_map_find_value(weapon_angle, spr_player), frame_index);
+    
+        var weapon_animation_index = 0;
+        if(spr_player == spr_player_draw_bow) {
+            weapon_animation_index = clamp(frame_index - 10, 0, 2);
+        }
+        
+        draw_sprite_ext(sprite, weapon_animation_index,
+            x + (ds_list_find_value(ds_map_find_value(weapon_x, spr_player), frame_index) - sprite_get_xoffset(spr_player)) * scale_x,
+            y + (ds_list_find_value(ds_map_find_value(weapon_y, spr_player), frame_index) - sprite_get_yoffset(spr_player)),
+            1, scale_x, angle, c_white, 1);
+    }
+    if(behind) {
+        draw_sprite_ext(spr_player, animation_index, x, y - 2, scale_x, 1, 0, color, 1);
+    }
 }
 </string>
           </argument>

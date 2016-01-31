@@ -28,6 +28,18 @@
     <sprite>sprites\spr_player_kneeling</sprite>
     <sprite>sprites\spr_water</sprite>
     <sprite>sprites\spr_water_normal</sprite>
+    <sprite>sprites\spr_bow</sprite>
+    <sprite>sprites\spr_sword</sprite>
+    <sprite>sprites\spr_chair_side</sprite>
+    <sprite>sprites\spr_chest_closed</sprite>
+    <sprite>sprites\spr_chest_open</sprite>
+    <sprite>sprites\spr_comfy_bed</sprite>
+    <sprite>sprites\spr_table</sprite>
+    <sprite>sprites\spr_cupboard</sprite>
+    <sprite>sprites\spr_throne_side</sprite>
+    <sprite>sprites\spr_antlers</sprite>
+    <sprite>sprites\spr_bed_side</sprite>
+    <sprite>sprites\spr_chair_front</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -60,6 +72,8 @@
     <object>objects\obj_background_1</object>
     <object>objects\obj_foreground_0</object>
     <object>objects\obj_foreground_1</object>
+    <object>objects\obj_chair_side</object>
+    <object>objects\obj_table</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_main</room>
