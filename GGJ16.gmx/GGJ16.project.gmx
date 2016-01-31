@@ -43,6 +43,7 @@
     <sprite>sprites\spr_chair_front</sprite>
     <sprite>sprites\spr_banner</sprite>
     <sprite>sprites\spr_bell</sprite>
+    <sprite>sprites\spr_door</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
