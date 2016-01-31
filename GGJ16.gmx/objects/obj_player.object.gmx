@@ -52,6 +52,8 @@ swing_attack = false;
 spr_player = spr_player_idle;
 color = c_black;
 bow_attack = false;
+bell_timer = 0.0;
+bell_active = false;
 
 weapon_x = ds_map_create();
 weapon_y = ds_map_create();
@@ -141,6 +143,8 @@ weapon_behind[? spr_player_swing] = false;
     var spawn_point = instance_nearest(x, y, obj_spawn_point);
     x = spawn_point.x;
     y = spawn_point.y;
+    if(omen_points &lt;= 0) omen_points = 3;
+    spr_player = spr_player_idle;
 }
 respawn_timer -= 1.0 / room_speed;
 if(respawn_timer &lt; 2.5) {
@@ -153,7 +157,14 @@ if(respawn_timer &lt; 2.5) {
     // Changes animation.
     animation_index += animation_speed;
     
-    if (spr_player == spr_player_swing) {
+    if(omen_points &lt;= 0) {
+        if(spr_player != spr_player_kneeling) animation_index = 0.0;
+        spr_player = spr_player_kneeling;
+        if(animation_index &gt; sprite_get_number(spr_player_kneeling) - 1) {
+            respawn = true;
+        }
+    }
+    else if (spr_player == spr_player_swing) {
         if(animation_index &gt;= sprite_get_number(spr_player_swing)) {
             spr_player = spr_player_idle;
             swing_attack = false;
@@ -170,6 +181,7 @@ if(respawn_timer &lt; 2.5) {
         }
         else if(animation_index &gt; sprite_get_number(spr_player_kneeling) - 1) {
             animation_index = sprite_get_number(spr_player_kneeling) - 1;
+            bell_active = false;
         }
         else if(animation_index &lt; 0.0) {
             spr_player =  spr_player_idle;
@@ -268,19 +280,11 @@ if(respawn_timer &lt; 2.5) {
         }
     }
     
-    if(respawn_timer &lt; 0.0) {
-        if(id == obj_main.player_0) {
-            if(instance_place(x, y, obj_main.player_1)) {
-                if(obj_main.player_1.swing_attack) {
-                    respawn = true;
-                }
-            }
-        }
-        else if(obj_main.player_0.respawn_timer &lt; 0.0) {
-            if(instance_place(x, y, obj_main.player_0)) {
-                if(obj_main.player_0.swing_attack) {
-                    respawn = true;
-                }
+    // Player to player swing attack
+    if(respawn_timer &lt; 0.0 &amp;&amp; other_player.respawn_timer &lt; 0.0) {
+        if(instance_place(x, y, other_player)) {
+            if(other_player.swing_attack) {
+                respawn = true;
             }
         }
     }
@@ -313,10 +317,17 @@ if(respawn_timer &lt; 2.5) {
     if(swing_attack) {
         var bell = instance_place(x, y, obj_bell)
         if(bell &amp;&amp; bell.swing_time &gt; 20.0) {
-            // TODO: Force the the other player to bow
             bell.swing_time = 0.0;
+            other_player.bell_timer = 3.0;
+            other_player.bell_active = true;
         }
     }
+    
+    if(bell_active &amp;&amp; bell_timer &lt; 0.0) {
+        omen_points--;
+        bell_active = false;
+    }
+    bell_timer -= 1.0 / room_speed;
 }
 
 // Weapon switching
