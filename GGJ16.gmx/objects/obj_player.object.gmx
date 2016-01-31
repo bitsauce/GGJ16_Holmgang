@@ -26,7 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>velocity_x = 0; velocity_y = 0;
-gravity_y = 0.5;
+gravity_y = 0.8;
 max_speed_x = 5;
 acceleration_x = 0.50;
 arrow_power = 0.0;
@@ -40,7 +40,8 @@ key_attack = vk_lshift;
 key_jump = vk_control;
 key_switch_weapon = vk_enter;
 on_ground = false;
-jump_speed = 15;
+jump_speed = 10;
+jump_timer = -1;
 animation_speed = 0.25;
 animation_index = irandom(100);
 omen_points = 3;
@@ -134,21 +135,57 @@ weapon_behind[? spr_player_swing] = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(respawn) {
+            <string>var can_control = (obj_main.in_menu == -1);
+
+if(respawn) {
     life_points--;
     respawn_timer = 5.0;
     respawn = false;
-    var spawn_point = instance_nearest(x, y, obj_spawn_point);
-    x = spawn_point.x;
-    y = spawn_point.y;
+    obj_camera.screenshake_x = 10; obj_camera.screenshake_y = 10;
+    var w = sprite_get_width(spr_player), h = sprite_get_height(spr_player), x_start = x - sprite_get_xoffset(spr_player), y_start = y + 2 - sprite_get_yoffset(spr_player);
+    if (scale_x &gt; 0) {
+        for (var t_y = 0; t_y &lt; h; t_y += 4) {
+            for (var t_x = 0; t_x &lt; w; t_x += 4) {
+                with (instance_create(x_start + t_x, y_start + t_y, obj_fragment)) {
+                        x_0 = t_x; y_0 = t_y;
+                        image_xscale = 1;
+                    direction = point_direction(w * 0.5, h * 0.9, t_x, t_y);
+                    speed = random_range(2, 4);
+                    sprite_index = other.spr_player;
+                    frame = other.animation_index;
+                    color = other.color;
+                }
+            }
+        }
+    } else {
+        for (var t_y = 0; t_y &lt; h; t_y += 4) {
+            for (var t_x = 0; t_x &lt; w; t_x += 4) {
+                with (instance_create(x_start + t_x, y_start + t_y, obj_fragment)) {
+                        x_0 = w - 4 - t_x; y_0 = t_y;
+                        image_xscale = -1;
+                    direction = point_direction(w * 0.5, h * 0.9, t_x, t_y);
+                    speed = random_range(2, 4);
+                    sprite_index = other.spr_player;
+                    frame = other.animation_index;
+                    color = other.color;
+                }
+            }
+        }
+    }
 }
+var t = respawn_timer;
 respawn_timer -= 1.0 / room_speed;
 if(respawn_timer &lt; 2.5) {
+    if (t &gt;= 2.5) {
+        var spawn_point = instance_nearest(x, y, obj_spawn_point);
+        x = spawn_point.x;
+        y = spawn_point.y;
+    }
     x_previous = x; y_previous = y;
     var can_move = spr_player != spr_player_kneeling &amp;&amp; spr_player != spr_player_draw_bow &amp;&amp; spr_player != spr_player_swing;
     
     // Changes velocity.
-    velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x * can_move, velocity_x - acceleration_x, velocity_x + acceleration_x);
+    velocity_x = clamp((keyboard_check(key_move_right) - keyboard_check(key_move_left)) * max_speed_x * can_move * can_control, velocity_x - acceleration_x, velocity_x + acceleration_x);
     
     // Changes animation.
     animation_index += animation_speed;
@@ -165,7 +202,7 @@ if(respawn_timer &lt; 2.5) {
         }
     }
     else if(spr_player == spr_player_kneeling) {
-        if(keyboard_check_released(key_aim_down) || keyboard_check_pressed(key_aim_down)) {
+        if(keyboard_check_released(key_aim_down) * can_control || keyboard_check_pressed(key_aim_down) * can_control) {
             animation_speed *= -1;
         }
         else if(animation_index &gt; sprite_get_number(spr_player_kneeling) - 1) {
@@ -178,13 +215,13 @@ if(respawn_timer &lt; 2.5) {
         }
     }
     else {
-        if(equiped_weapon == 0 &amp;&amp; keyboard_check_pressed(key_attack))
+        if(equiped_weapon == 0 &amp;&amp; keyboard_check_pressed(key_attack) * can_control)
         {
             spr_player = spr_player_swing;
             animation_index = 0.0;
             swing_attack = true;
         }
-        else if(equiped_weapon == 1 &amp;&amp; keyboard_check_pressed(key_attack)) {
+        else if(equiped_weapon == 1 &amp;&amp; keyboard_check_pressed(key_attack) * can_control) {
             spr_player = spr_player_draw_bow;
             animation_index = 0.0;
         }
@@ -195,10 +232,10 @@ if(respawn_timer &lt; 2.5) {
         else if(!on_ground) {
             spr_player = spr_player_turn;
         }
-        else if(keyboard_check(key_move_right) &amp;&amp; velocity_x &lt; 0.0) {
+        else if(keyboard_check(key_move_right) * can_control &amp;&amp; velocity_x &lt; 0.0) {
             spr_player = spr_player_turn;
         }
-        else if(keyboard_check(key_move_left) &amp;&amp; velocity_x &gt; 0.0) {
+        else if(keyboard_check(key_move_left) * can_control &amp;&amp; velocity_x &gt; 0.0) {
             spr_player = spr_player_turn;
         }
         else if (abs(velocity_x) &gt; 0)
@@ -209,16 +246,19 @@ if(respawn_timer &lt; 2.5) {
     
     // Jump
     if (on_ground) {
-        if (can_move &amp;&amp; keyboard_check_pressed(key_jump)) {
+        if (can_move &amp;&amp; keyboard_check_pressed(key_jump) * can_control) {
             velocity_y = -jump_speed;
+            jump_timer = 12;
         } else {
             velocity_y = 0;
         }
     } else {
+        if (jump_timer &gt; 0 &amp;&amp; can_move &amp;&amp; keyboard_check(key_jump) * can_control) velocity_y = -jump_speed;
         velocity_y += gravity_y;
     }
+    --jump_timer;
     
-    var fall_through_jump_through_collision = keyboard_check(key_move_down) || place_meeting(x, y, obj_parent_collision_jump_through);
+    var fall_through_jump_through_collision = keyboard_check(key_move_down) * can_control || place_meeting(x, y, obj_parent_collision_jump_through);
     
     // Collision vertically.
     if (velocity_y &gt; 0) {
@@ -229,7 +269,7 @@ if(respawn_timer &lt; 2.5) {
         with (obj_parent_collision_jump_through) solid = false;
         move_contact_solid(90, -velocity_y);
         with (obj_parent_collision_jump_through) solid = true;
-        if (place_meeting(x, y - 1, obj_parent_collision)) velocity_y = 0;
+        if (place_meeting(x, y - 1, obj_parent_collision)) {velocity_y = 0; jump_timer = 0;}
     }
     on_ground = place_meeting(x, y + 1, obj_parent_collision) || (place_meeting(x, y + 1, obj_parent_collision_jump_through) &amp;&amp; !fall_through_jump_through_collision &amp;&amp; velocity_y &gt;= 0);
     
@@ -288,16 +328,16 @@ if(respawn_timer &lt; 2.5) {
     // Arrow firing
     if (equiped_weapon == 1) {
         if (!bow_attack) {
-            if (keyboard_check_pressed(key_attack)) {
+            if (keyboard_check_pressed(key_attack) * can_control) {
                 animation_index = 0.0;
                 bow_attack = true;
                 aim_up = false;
             }
         }
         else {
-            if(keyboard_check_pressed(key_aim_up)) aim_up = true;
-            else if(keyboard_check_released(key_aim_down)) aim_up = false;
-            if (animation_index &gt;= sprite_get_number(spr_player_draw_bow) - 2 &amp;&amp; !keyboard_check(key_attack)) {
+            if(keyboard_check_pressed(key_aim_up) * can_control) aim_up = true;
+            else if(keyboard_check_released(key_aim_down) * can_control) aim_up = false;
+            if (animation_index &gt;= sprite_get_number(spr_player_draw_bow) - 2 &amp;&amp; !keyboard_check(key_attack) * can_control) {
                 var arrow = instance_create(x, y - 20, obj_arrow);
                 var angle = 60.0 * aim_up;
                 arrow.velocity_x = 15.0 * dcos(angle) * scale_x * 2;
@@ -321,7 +361,7 @@ if(respawn_timer &lt; 2.5) {
 
 // Weapon switching
 if(!swing_attack) {
-    if(keyboard_check_pressed(key_switch_weapon)) {
+    if(keyboard_check_pressed(key_switch_weapon) * can_control) {
         equiped_weapon = (equiped_weapon + 1) % 2;
    }
 }
