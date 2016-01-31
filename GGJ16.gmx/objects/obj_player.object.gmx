@@ -54,6 +54,8 @@ color = c_black;
 bow_attack = false;
 bell_timer = 0.0;
 bell_active = false;
+door_timer = 0.0;
+door_active = false;
 
 weapon_x = ds_map_create();
 weapon_y = ds_map_create();
@@ -334,6 +336,8 @@ if(respawn_timer &lt; 2.5) {
         var door = instance_nearest(x, y, obj_door);
         if(!place_meeting(x, y, door) &amp;&amp; point_distance(x, y, door.x, door.y) &lt; 100) {
             door.open = !door.open;
+            door.opened_by = id;
+            door.timer = 3.0;
         }
     }
 }
