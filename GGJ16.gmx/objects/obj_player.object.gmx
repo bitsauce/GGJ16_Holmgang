@@ -553,6 +553,7 @@ x = clamp(x, 478, 5353);
     }
     if(placement) {
         var angle;
+        animation_index = max(animation_index, 0.0)
         var frame_index = floor(animation_index) % sprite_get_number(spr_player);
         var sprite;
         
