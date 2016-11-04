@@ -240,8 +240,10 @@ with (obj_ui) event_perform(ev_draw, ev_gui);
 with (obj_ui_message_big) event_perform(ev_draw, ev_gui);
 
 if (in_menu != -1) {
-    draw_sprite(spr_ui_borders, 0, 0, -in_menu_timer_0 * sprite_get_height(spr_ui_borders));
-    draw_sprite(spr_ui_borders, 1, 0, display_height * 0.5 + in_menu_timer_0 * sprite_get_height(spr_ui_borders));
+    var sprite_w = display_width;
+    var sprite_h = sprite_w * sprite_get_height(spr_ui_borders) / sprite_get_width(spr_ui_borders);
+    draw_sprite_stretched(spr_ui_borders, 0, 0, -in_menu_timer_0 * sprite_get_height(spr_ui_borders), sprite_w, sprite_h);
+    draw_sprite_stretched(spr_ui_borders, 1, 0, display_height - sprite_h + in_menu_timer_0 * sprite_get_height(spr_ui_borders), sprite_w, sprite_h);
     if (in_menu_timer_1 &gt; 0 &amp;&amp; in_menu_timer_1 &lt; 1 &amp;&amp; in_menu == 3) {
         draw_set_halign(fa_center); draw_set_valign(fa_middle);
         var s;
